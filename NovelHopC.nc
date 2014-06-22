@@ -1,7 +1,7 @@
 #include <Timer.h>
-#include "BlinkToRadio.h"
+#include "NovelHop.h"
 
-module BlinkToRadioC {
+module NovelHopC {
   uses interface Boot;
   uses interface Leds;
   uses interface Timer<TMilli> as Timer0;
@@ -51,8 +51,8 @@ implementation {
   event void Timer0.fired() {
     counter++;
     if (!busy) {
-      BlinkToRadioMsg* btrpkt = 
-	(BlinkToRadioMsg*)(call Packet.getPayload(&pkt, sizeof(BlinkToRadioMsg)));
+      NovelHopMsg* btrpkt = 
+	(NovelHopMsg*)(call Packet.getPayload(&pkt, sizeof(NovelHopMsg)));
       if (btrpkt == NULL) {
 	return;
       }
@@ -60,7 +60,7 @@ implementation {
       btrpkt->dst_id = 3;
       btrpkt->counter = counter;
       if (call AMSend.send(AM_BROADCAST_ADDR, 
-          &pkt, sizeof(BlinkToRadioMsg)) == SUCCESS) {
+          &pkt, sizeof(NovelHopMsg)) == SUCCESS) {
         busy = TRUE;
       }
     }
@@ -73,8 +73,8 @@ implementation {
   }
 
   event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
-    if (len == sizeof(BlinkToRadioMsg)) {
-      BlinkToRadioMsg* btrpkt = (BlinkToRadioMsg*)payload;
+    if (len == sizeof(NovelHopMsg)) {
+      NovelHopMsg* btrpkt = (NovelHopMsg*)payload;
 
       if(btrpkt->dst_id == TOS_NODE_ID)
         setLeds(btrpkt->counter);
@@ -87,8 +87,8 @@ implementation {
 
         */
 
-         BlinkToRadioMsg* btrpkt_new = 
-  (BlinkToRadioMsg*)(call Packet.getPayload(&pkt, sizeof(BlinkToRadioMsg)));
+         NovelHopMsg* btrpkt_new = 
+  (NovelHopMsg*)(call Packet.getPayload(&pkt, sizeof(NovelHopMsg)));
 
           btrpkt_new->src_id = btrpkt->src_id;
           btrpkt_new->dst_id = btrpkt->dst_id;
@@ -96,7 +96,7 @@ implementation {
 
 
         if (call AMSend.send(AM_BROADCAST_ADDR, 
-          &pkt, sizeof(BlinkToRadioMsg)) == SUCCESS) {
+          &pkt, sizeof(NovelHopMsg)) == SUCCESS) {
         busy = TRUE;
        }
 

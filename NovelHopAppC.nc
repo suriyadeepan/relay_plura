@@ -1,16 +1,16 @@
 #include <Timer.h>
-#include "BlinkToRadio.h"
+#include "NovelHop.h"
 
-configuration BlinkToRadioAppC {
+configuration NovelHopAppC {
 }
 implementation {
   components MainC;
   components LedsC;
-  components BlinkToRadioC as App;
+  components NovelHopC as App;
   components new TimerMilliC() as Timer0;
   components ActiveMessageC;
-  components new AMSenderC(AM_BLINKTORADIO);
-  components new AMReceiverC(AM_BLINKTORADIO);
+  components new AMSenderC(AM_NOVELHOP);
+  components new AMReceiverC(AM_NOVELHOP);
 
   App.Boot -> MainC;
   App.Leds -> LedsC;

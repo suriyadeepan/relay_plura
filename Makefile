@@ -1,3 +1,4 @@
-COMPONENT=BlinkToRadioAppC
+#COMPONENT=BlinkToRadioAppC
+COMPONENT=NovelHopAppC
 include $(MAKERULES)
 
