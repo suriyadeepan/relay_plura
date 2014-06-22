@@ -50,7 +50,7 @@ implementation {
 
   event void Timer0.fired() {
     counter++;
-    if (!busy) {
+    if (!busy && TOS_NODE_ID == 1) {
       NovelHopMsg* btrpkt = 
 	(NovelHopMsg*)(call Packet.getPayload(&pkt, sizeof(NovelHopMsg)));
       if (btrpkt == NULL) {
