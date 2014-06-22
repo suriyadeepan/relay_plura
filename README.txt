@@ -1,11 +1,3 @@
-$Id: README.txt,v 1.4 2006-12-12 18:22:52 vlahan Exp $
-
-README for Blink
-
-Author/Contact:
-
-  tinyos-help@millennium.berkeley.edu
-
 Description:
 
   The BlinkToRadio application.  A counter is incremented and a radio
@@ -17,11 +9,3 @@ Description:
   both) of the nodes stops changing and hold steady, then that node is
   no longer receiving any messages from the other node.
 
-
-Tools:
-
-  None
-
-Known bugs/limitations:
-
-  None.
