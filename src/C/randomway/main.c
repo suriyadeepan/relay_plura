@@ -59,10 +59,10 @@ int main(){
 				}
 
 				double offset = ni[i].x;
-				ni[i].x = offset + ( ni[i].speed * 0.2 ) * cos(ni[i].theta);
+				ni[i].x = offset + ( ni[i].speed * 0.2 ) * cos(ni[i].theta * 22/ (7*180) ) ;
 
 				offset = ni[i].y;
-				ni[i].y = offset + ( ni[i].speed * 0.2 ) * sin(ni[i].theta);
+				ni[i].y = offset + ( ni[i].speed * 0.2 ) * sin(ni[i].theta * 22/ (7*180) ) ;
 
 				ni[i].run_time -= 0.2;
 

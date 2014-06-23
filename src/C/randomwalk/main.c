@@ -18,9 +18,13 @@ int main(){
 	//	Run Time
 	gRunTime = 10000;
 	//  Max Speed
-	gMax_Speed = 2;
-	//  Max Pause Time
-	gMax_Pause = 3;
+	gMax_Speed = 4;
+
+	// set time resolution
+	gT_int = 0.2;
+
+	// set time interval
+	double t_int = 1;
 
 	int i;
 
@@ -41,56 +45,36 @@ int main(){
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
 
-		// Iterate through the nodes
+			// Iterate through the nodes
 		for(i=0;i<gN;i++){
 
+			// every 't_int' time units
+			//  set new speed, new direction
+			if( fmod(gTime,t_int) == 0){
 
-			// Check if the node has runtime left or not
-			if( ni[i].run_time > 0.0 ){
+				// set speed, theta
+				srand(clock() + i);
+				move_rwk( &ni[i], ( (double)rand()/(double)RAND_MAX ) * gMax_Speed, 
+			  									( (double)rand()/(double)RAND_MAX ) * 360 ); 
+
+			}
+
+		  else{
+
+				// find new location of x,y based on (speed) distance and angle
+				update_rwk(&ni[i]);
+
+			}
 
 				// if out of bounds
-				if(ni[i].x >= gMax_X - 20 || ni[i].y >= gMax_Y - 20 || ni[i].x <= 20 || ni[i].y <= 20 ){
+			if(ni[i].x >= gMax_X - 20 || ni[i].y >= gMax_Y - 20 || ni[i].x <= 20 || ni[i].y <= 20 ){
 
-					if ( ni[i].theta < 180 )
-						ni[i].theta += 180;
-					else
-						ni[i].theta = ni[i].theta - 180;
+				if ( ni[i].theta < 180 )
+					ni[i].theta += 180;
+				else
+					ni[i].theta = ni[i].theta - 180;
 					//ni[i].speed = gMax_Speed;
-				}
-
-				double offset = ni[i].x;
-				ni[i].x = offset + ( ni[i].speed * 0.2 ) * cos(ni[i].theta);
-
-				offset = ni[i].y;
-				ni[i].y = offset + ( ni[i].speed * 0.2 ) * sin(ni[i].theta);
-
-				ni[i].run_time -= 0.2;
-
-			}// end of RUNTIME_LEFT condition
-
-			// No runtime left
-			else{
-
-				// Rest/Pause time left
-				if( ni[i].rest_time > 0 )
-					ni[i].rest_time -= 0.2;
-
-				// No Rest/Pause time left
-				else{
-
-					srand(clock()+i);
-
-					move ( &ni[i],( (double)rand()/(double)RAND_MAX ) * gMax_X,
-								 				( (double)rand()/(double)RAND_MAX ) * gMax_Y,
-												( (double)rand()/(double)RAND_MAX ) * gMax_Speed,
-												( (double)rand()/(double)RAND_MAX ) * gMax_Pause );
-					
-
-				}// end of NO_PAUSETIME_LEFT condition
-
-
-			}// end of NO_RUNTIME_LEFT condition
-
+			}
 
 
 		}// end of FOR
@@ -98,7 +82,7 @@ int main(){
  	 //Snapshot of node locations @ time "gTime"
 	 snapshot(&ni[0],gTime);
 
-	 gTime += 0.2;
+	 gTime += gT_int;
 
 	}// end of WHILE
 

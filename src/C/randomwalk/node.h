@@ -50,13 +50,15 @@ int nodeLocalizedInit (struct node*,int,double,double);
 /*
  * Write something about move
  */
-int move (struct node*,double,double,double,double);
+int move_rwy (struct node*,double,double,double,double);
+int move_rwk (struct node*,double,double);
 
 
 /*
  * Write something about update
  */
-int update (struct node*,double,double,double);
+int update_rwy (struct node*,double,double,double);
+int update_rwk (struct node*);
 
 
 /*
@@ -87,5 +89,7 @@ double gMax_Speed;
 double gMax_Pause;
 double gN;
 double gRunTime;
+
+double gT_int;
 
 #endif
