@@ -11,16 +11,16 @@ int main(){
 
 	// Get necessary parameters from user 
 	//  Map/Grid Dimensions
-	gMax_X = 100;
-	gMax_Y = 100;
+	gMax_X = 250;
+	gMax_Y = 250;
 	//  #nodes
 	gN = 5;
 	//	Run Time
 	gRunTime = 10000;
 	//  Max Speed
-	gMax_Speed = 10;
+	gMax_Speed = 2;
 	//  Max Pause Time
-	gMax_Pause = 2;
+	gMax_Pause = 3;
 
 	int i;
 
@@ -44,37 +44,27 @@ int main(){
 		// Iterate through the nodes
 		for(i=0;i<gN;i++){
 
-			// if out of bounds
-			/*
-			if(ni[i].x >= gMax_X || ni[i].y >= gMax_Y){
-				ni[i].rest_time = 0.0;
-				ni[i].run_time = 0.0;
-			}*/
-
 
 			// Check if the node has runtime left or not
 			if( ni[i].run_time > 0.0 ){
 
-				if(ni[i].x >= gMax_X || ni[i].y >= gMax_Y || ni[i].x <= 0 || ni[i].y <= 0 || ni[i].dstX >= gMax_X || ni[i].dstY >= gMax_Y || ni[i].dstX <= 0 || ni[i].dstY <= 0 ){
-	
-					srand(clock()+i);
+				// if out of bounds
+				if(ni[i].x >= gMax_X - 20 || ni[i].y >= gMax_Y - 20 || ni[i].x <= 20 || ni[i].y <= 20 ){
 
-					move ( &ni[i],( (double)rand()/(double)RAND_MAX ) * gMax_X,
-								 				( (double)rand()/(double)RAND_MAX ) * gMax_Y,
-												( (double)rand()/(double)RAND_MAX ) * gMax_Speed,
-												( (double)rand()/(double)RAND_MAX ) * gMax_Pause );
+					if ( ni[i].theta < 180 )
+						ni[i].theta += 180;
+					else
+						ni[i].theta = ni[i].theta - 180;
+					//ni[i].speed = gMax_Speed;
 				}
 
-				else{
+				double offset = ni[i].x;
+				ni[i].x = offset + ( ni[i].speed * 0.2 ) * cos(ni[i].theta);
 
-					double offset = ni[i].x;
-					ni[i].x = offset + ( ni[i].speed * 0.2 ) * cos(ni[i].theta) ;
+				offset = ni[i].y;
+				ni[i].y = offset + ( ni[i].speed * 0.2 ) * sin(ni[i].theta);
 
-					offset = ni[i].y;
-					ni[i].y = offset + ( ni[i].speed * 0.2 ) * sin(ni[i].theta) ;
-
-					ni[i].run_time -= 0.2;
-				}
+				ni[i].run_time -= 0.2;
 
 			}// end of RUNTIME_LEFT condition
 

@@ -75,9 +75,9 @@ int update (struct node* n0, double x, double y, double run_time){
  */
 void trace (struct node* n0,double g_time){
 
-/*	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,speed: %.3f>\n",
-			n0->node_id, n0->x,n0->y,n0->dstX,n0->dstY,n0->theta,n0->run_time,n0->speed);
-			*/
+/*	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,pause_time : %.3f,speed: %.3f>\n",
+			n0->node_id, n0->x,n0->y,n0->dstX,n0->dstY,n0->theta,n0->run_time,n0->rest_time,n0->speed);*/
+			
 	printf("\n%d %0.3f %.3f %.3f",n0->node_id, g_time, n0->x, n0->y);
 
 }
@@ -97,7 +97,7 @@ void snapshot(struct node* n0,double g_time){
  *  FIX IT : port these functions to nodeutils.h
  */
 double calcTheta(double x1,double y1,double x2,double y2){
-	return atan( (y2 - y1) / (x2 - x1) );
+	return atan2( y2-y1,x2-x1 )*(180*7)/22; 
 }
 
 double calcDist (double x1,double y1,double x2,double y2){
