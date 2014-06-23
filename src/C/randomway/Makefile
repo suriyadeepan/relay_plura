@@ -1,8 +1,8 @@
-randway:  randway.o
-	gcc randway.o -o randway.bin -Wall -lm
+main:  main.o node.o
+	gcc main.o node.o -o main.bin -lm
 
-randway.o:  randway.c
-	gcc -c randway.c -Wall
+main.o:  main.c node.c
+	gcc -c node.c main.c 
 
 clean:
-	rm -f *.o *~ randway.bin 
+	rm -f *.o *~ *.bin

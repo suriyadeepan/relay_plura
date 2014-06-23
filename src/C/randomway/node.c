@@ -1,0 +1,99 @@
+#include "node.h"
+
+#include "stdio.h"
+#include "stdlib.h"
+#include "math.h"
+#include "time.h"
+
+
+int nodeInit (struct node* n0, int node_id){
+	
+	n0->node_id = node_id;
+		
+	/*
+	 * Generate random values and assign to node positions
+	 */
+	//srand((int)time(NULL) + node_id);
+	srand( clock() );
+	n0->x = ( (double)rand()/(double)RAND_MAX ) * gMax_X;
+	n0->y = ( (double)rand()/(double)RAND_MAX ) * gMax_Y;
+
+	n0->run_time = 0.0;
+	n0->rest_time = 0.0;
+	n0->speed = 0.0;
+
+	n0->dstX = n0->x;
+	n0->dstY = n0->y;
+
+	return 0;
+}
+
+int nodeLocalizedInit (struct node* n0, int node_id, double x, double y){
+
+	n0->node_id = node_id;
+	n0->x = x;
+	n0->y = y;
+
+	n0->run_time = 0.0;
+	n0->rest_time = 0.0;
+	n0->speed = 0.0;
+
+	n0->dstX = x;
+	n0->dstY = y;
+
+	return 0;
+
+}
+
+/*
+ * Write something about move
+ */
+int move (struct node* n0, double dstX, double dstY, double speed){
+
+	n0->dstX = dstX;	n0->dstY = dstY;	n0->speed = speed;
+
+}
+
+/*
+ * Write something about update
+ */
+int update (struct node* n0, double x, double y, double run_time){
+
+	n0->x = x; n0->y = y; n0->run_time = run_time;
+
+}
+
+
+/*
+ * Write something about trace
+ */
+void trace (struct node* n0){
+
+	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,speed: %.3f>\n",
+			n0->node_id, n0->x,n0->y,n0->dstX,n0->dstY,n0->theta,n0->run_time,n0->speed);
+}
+
+/*
+ * Get a snapshot of parameters of all nodes
+ */
+void snapshot(struct node* n0){
+
+	int i=0;
+	for(i=0;i<gN;i++)
+		trace(&n0[i]);
+
+}
+
+/*
+ * Utility Functions
+ *  FIX IT : port these functions to nodeutils.h
+ */
+double calcTheta(double x1,double y1,double x2,double y2){
+	return atan( (y2 - y1) / (x2 - x1) );
+}
+
+double calcDist (double x1,double y1,double x2,double y2){
+	return sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) );
+}
+
+
