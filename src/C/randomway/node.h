@@ -50,7 +50,7 @@ int nodeLocalizedInit (struct node*,int,double,double);
 /*
  * Write something about move
  */
-int move (struct node*,double,double,double);
+int move (struct node*,double,double,double,double);
 
 
 /*
@@ -62,12 +62,12 @@ int update (struct node*,double,double,double);
 /*
  * Write something about trace
  */
-void trace (struct node*);
+void trace (struct node*,double);
 
 /*
  * Get a snapshot of parameters of all nodes
  */
-void snapshot (struct node*);
+void snapshot (struct node*,double);
 
 /*
  * Utility Functions
@@ -84,6 +84,7 @@ double calcDist (double ,double ,double ,double );
 double gMax_X;
 double gMax_Y;
 double gMax_Speed;
+double gMax_Pause;
 double gN;
 double gRunTime;
 

@@ -48,9 +48,15 @@ int nodeLocalizedInit (struct node* n0, int node_id, double x, double y){
 /*
  * Write something about move
  */
-int move (struct node* n0, double dstX, double dstY, double speed){
+int move (struct node* n0, double dstX, double dstY, double speed, double rest_time){
 
-	n0->dstX = dstX;	n0->dstY = dstY;	n0->speed = speed;
+	n0->dstX = dstX;	n0->dstY = dstY;	n0->speed = speed; n0->rest_time = rest_time;
+
+	// find and set run_time
+	n0->run_time = calcDist(n0->x,n0->y,n0->dstX,n0->dstY) / speed;
+
+	// find and set theta
+	n0->theta = calcTheta(n0->x,n0->y,n0->dstX,n0->dstY);
 
 }
 
@@ -67,21 +73,23 @@ int update (struct node* n0, double x, double y, double run_time){
 /*
  * Write something about trace
  */
-void trace (struct node* n0){
+void trace (struct node* n0,double g_time){
 
-	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,speed: %.3f>\n",
+/*	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,speed: %.3f>\n",
 			n0->node_id, n0->x,n0->y,n0->dstX,n0->dstY,n0->theta,n0->run_time,n0->speed);
+			*/
+	printf("\n%d %0.3f %.3f %.3f",n0->node_id, g_time, n0->x, n0->y);
+
 }
 
 /*
  * Get a snapshot of parameters of all nodes
  */
-void snapshot(struct node* n0){
+void snapshot(struct node* n0,double g_time){
 
 	int i=0;
 	for(i=0;i<gN;i++)
-		trace(&n0[i]);
-
+		trace(&n0[i],g_time);
 }
 
 /*
