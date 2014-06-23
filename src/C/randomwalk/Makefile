@@ -1,8 +1,8 @@
-randwalk:  randwalk.o
-	gcc randwalk.o -o randwalk -Wall -lm
+main:  main.o node.o
+	gcc main.o node.o -o main.bin -lm
 
-randwalk.o:  randwalk.c
-	gcc -c randwalk.c -Wall
+main.o:  main.c node.c
+	gcc -c node.c main.c 
 
 clean:
-	rm -f *.o *~ randwalk
+	rm -f *.o *~ *.bin
