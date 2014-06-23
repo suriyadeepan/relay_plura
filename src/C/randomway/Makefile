@@ -1,8 +1,8 @@
-mobgen:  mobgen.o
-	gcc mobgen.o -o mobgen.bin -Wall -lm
+randway:  randway.o
+	gcc randway.o -o randway.bin -Wall -lm
 
-mobgen.o:  mobgen.c
-	gcc -c mobgen.c -Wall
+randway.o:  randway.c
+	gcc -c randway.c -Wall
 
 clean:
-	rm -f *.o *~ mobgen.bin 
+	rm -f *.o *~ randway.bin 

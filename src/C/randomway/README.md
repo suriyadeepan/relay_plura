@@ -1,5 +1,5 @@
 
-Random Walk Mobility Model
+Random Waypoint Mobility Model
 --------------------------
 
 
