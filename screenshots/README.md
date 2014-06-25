@@ -12,3 +12,10 @@
 ### Random Walk Coverage GNUPlot
 
 ![picture alt]( https://raw.githubusercontent.com/utortuga/relay_plura/master/screenshots/RandomWalk_GNUPLOT.png "Random Walk Coverage GNUPlot" )
+
+
+#### Frontier Based Exploration GNUPlot with Greedy Algorithm ####
+
+![picture alt]( https://raw.githubusercontent.com/utortuga/relay_plura/master/screenshots/frontier_based_greedy.png  "Greedy Frontier GNUPlot" )
+
+

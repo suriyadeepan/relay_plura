@@ -19,4 +19,7 @@
 	3] More sophisticated algorithms also take into account the information that
   	 can be gained along each frontier.
 
+### Screenshot ###
+
+![picture alt]( https://raw.githubusercontent.com/utortuga/relay_plura/master/screenshots/frontier_based_greedy.png  "Greedy Frontier GNUPlot" )
 
