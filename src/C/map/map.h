@@ -27,6 +27,14 @@ int initMap (Mat *, int, int );
 int loadMap(Mat *, struct node *, int);
 
 /*
+ * Calculate Histogram
+ */
+void runHist(Mat *);
+
+double plot(Mat *);
+
+
+/*
  * Update the pixel values based on node locations
  */
 void updateMap (Mat *);

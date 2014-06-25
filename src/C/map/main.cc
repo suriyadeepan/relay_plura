@@ -16,12 +16,12 @@ double	gMax_Y = 500;
 	//  #nodes
 double	gN = 5;
 	//	Run Time
-double	gRunTime = 10000;
+double	gRunTime = 100000;
 	//  Max Speed
-double	gMax_Speed = 4;
+double	gMax_Speed = 2;
 
 	// set time resolution
-double gT_int = 0.2;
+double gT_int = 1;
 
 
 int main(){
@@ -33,7 +33,7 @@ int main(){
 	initMap(&matrix,gMax_X,gMax_Y);
 
 	// set time interval
-	double t_int = 1;
+	int t_int = 4;
 
 	int i;
 
@@ -66,7 +66,9 @@ int main(){
 
 			// every 't_int' time units
 			//  set new speed, new direction
-			if( fmod(gTime,t_int) == 0){
+//			if( fmod(gTime,t_int) == 0){
+			if((int)gTime % t_int == 0){
+
 
 				// set speed, theta
 				srand(clock() + i);
@@ -77,19 +79,22 @@ int main(){
 
 		  else{
 
+
 				// find new location of x,y based on (speed) distance and angle
 				update_rwk(&ni[i]);
 
 			}
 
 				// if out of bounds
+				//  we need Reflecting boundaries
 			if(ni[i].x >= gMax_X - 20 || ni[i].y >= gMax_Y - 20 || ni[i].x <= 20 || ni[i].y <= 20 ){
 
 				// set speed, theta
 				srand(clock() + i);
 				move_rwk( &ni[i], ( (double)rand()/(double)RAND_MAX ) * gMax_Speed, 
-			  									( (double)rand()/(double)RAND_MAX ) * 360 ); 
+			  									 *(&ni[i].theta) - 180); 
 
+				update_rwk(&ni[i]);
 
 					//ni[i].theta = ni[i].theta - 180;
 					//ni[i].speed = gMax_Speed;
@@ -107,6 +112,12 @@ int main(){
 		loadMap(&matrix,ni,gN);
 		imshow("My Map",matrix);
 
+		// Update Histogram
+		//runHist(&matrix);
+		printf("\nCoverage: %.4f", plot(&matrix)*100 );
+
+
+
 		waitKey(1);
 
  	 //Snapshot of node locations @ time "gTime"
@@ -117,7 +128,7 @@ int main(){
 	}// end of WHILE
 
 	
-	waitKey(0);
+	waitKey(10);
 
 	return 0;
 

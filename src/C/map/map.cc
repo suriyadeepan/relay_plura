@@ -30,6 +30,7 @@ int initMap (Mat* matrix, int sizeX, int sizeY){
  */
 int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
+	int x,y;
 	char str[10];
 	/*
 	 * Iterate through the node locations till nodeCount
@@ -37,25 +38,42 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 	 */
 	for(int i=0; i<nodeCount; i++){
 
-		int x = (int) *(&n0[i].x);
-		int y = (int) *(&n0[i].y);
-		
+		x = (int) *(&n0[i].x);
+		y = (int) *(&n0[i].y);
 
-		//printf("\n(%d,%d)\n",x,y);
 
 		circle( *matrix, Point(x,y), 40, Scalar(255,255,255), -1, 8, 0 );
 		circle( *matrix, Point(x,y), 10, Scalar(0,255,0), -1, 8, 0 );
 
 		//sprintf(str,"%d: (%d,%d)",*(&n0[i].node_id),x,y);
-
-		//putText(*matrix, str,Point(x-30,y+22),FONT_HERSHEY_PLAIN, 0.65, Scalar(0,0,0),1,8,false);
-		
+		//putText(*matrix, str,Point(30,30),FONT_HERSHEY_PLAIN,1, Scalar(0,0,255),1,8,false);
 
 	}// END OF FOR
 
+	
 	return 0;
 
 }
+
+double plot(Mat* matrix){
+
+
+	/* Calculate Coverage ( ratio of white to black )
+	 *
+	 * 	1] convert *matrix to GrayScale
+	 * 	2] Binary threshold GrayScale image
+	 * 	3] call countNonZero() method
+	 */
+	Mat dst;
+	cvtColor(*matrix,dst,CV_BGR2GRAY,0);
+	threshold(dst,dst,10,255,THRESH_BINARY);
+
+	double coverage = (double)( countNonZero(dst)/(gMax_X*gMax_Y) );
+
+	return coverage;
+
+}
+
 
 /*
  * Update the pixel values based on node locations
