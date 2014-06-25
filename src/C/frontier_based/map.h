@@ -29,12 +29,12 @@ int loadMap(Mat *, struct node *, int);
 /*
  * Calculate Histogram
  */
-void runHist(Mat *);
+double getCoverage(Mat *);
 
-double plot(Mat *, Mat *, int, int);
-
-void initPlot(Mat*);
-
+/*
+ * Find the frontiers using Edge Detection Filter
+ */
+int getFrontiers(Mat *,Point *);
 
 /*
  * Update the pixel values based on node locations

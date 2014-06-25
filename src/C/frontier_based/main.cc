@@ -23,14 +23,15 @@ double	gMax_Speed = 2;
 	// set time resolution
 double gT_int = 1;
 
+Point frontiers[200];
+int frontiersCount = 0;
 
 int main(){
 
-	Mat matrix,plotImg;
+	Mat matrix;
 
 	initMap(&matrix,gMax_X,gMax_Y);
 
-	initPlot(&plotImg);
 	// set time interval
 	int t_int = 4;
 
@@ -50,7 +51,7 @@ int main(){
 	loadMap(&matrix,ni,gN);
 
 
-	//imshow("My Map",matrix);
+	imshow("My Map",matrix);
 
 	waitKey(0);
 
@@ -109,10 +110,14 @@ int main(){
 		 */
 
 		loadMap(&matrix,ni,gN);
-		//imshow("My Map",matrix);
+		imshow("My Map",matrix);
 
-		// Update Histogram
-		printf("\n%.0f %.4f", gTime,plot(&matrix,&plotImg,(int)gTime ,0)*100 );
+		// Get Coverage and log it
+		if( (int)gTime % 1000 == 0){
+			printf("\n%.0f %.4f", gTime, getCoverage(&matrix) * 100 );
+			frontiersCount = getFrontiers(&matrix,frontiers);
+		}
+
 
 		waitKey(1);
 

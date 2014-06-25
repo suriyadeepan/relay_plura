@@ -31,7 +31,6 @@ int initMap (Mat* matrix, int sizeX, int sizeY){
 int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
 	int x,y;
-	//char str[10];
 	/*
 	 * Iterate through the node locations till nodeCount
 	 * 	Draw circles at those locations in the map
@@ -45,9 +44,6 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 		circle( *matrix, Point(x,y), 40, Scalar(255,255,255), -1, 8, 0 );
 		circle( *matrix, Point(x,y), 10, Scalar(0,255,0), -1, 8, 0 );
 
-		//sprintf(str,"%d: (%d,%d)",*(&n0[i].node_id),x,y);
-		//putText(*matrix, str,Point(30,30),FONT_HERSHEY_PLAIN,1, Scalar(0,0,255),1,8,false);
-
 	}// END OF FOR
 
 	
@@ -55,14 +51,11 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
 }
 
-void initPlot(Mat* plotImg){
 
-	*plotImg = Mat(500, 1500, CV_8UC3);
-	plotImg->setTo(Scalar(255,255,255));
-
-}
-
-double plot(Mat* matrix,Mat* plotImg,int gTime,int plotStatus){
+/*
+ * Not interested in plotting for now
+ */
+double getCoverage(Mat* matrix ){
 
 
 	/* Calculate Coverage ( ratio of white to black )
@@ -71,20 +64,55 @@ double plot(Mat* matrix,Mat* plotImg,int gTime,int plotStatus){
 	 * 	2] Binary threshold GrayScale image
 	 * 	3] call countNonZero() method
 	 */
-	char str[10];
 	Mat dst;
 	cvtColor(*matrix,dst,CV_BGR2GRAY,0);
 	threshold(dst,dst,10,255,THRESH_BINARY);
 
 	double coverage = (double)( countNonZero(dst)/(gMax_X*gMax_Y) );
 
-	circle( *plotImg, Point(gTime/5, 500 - (coverage*500) ), 2, Scalar(0,255,0), -1, 8, 0 );
-
-	if(plotStatus != 0)
-		imshow("My Plot",*plotImg);
-
+	// deallocate memory
+	dst.release();
 
 	return coverage;
+
+}
+
+int getFrontiers(Mat *matrix, Point *frontiers){
+
+	Mat cannied;
+	vector<vector<Point> > contours;
+
+	// convert BGR to GRAYSCALE
+	cvtColor(*matrix,cannied,CV_BGR2GRAY,0);
+
+	// convert GRAYSCALE to binary
+	threshold(cannied,cannied,10,255,THRESH_BINARY);
+
+	// Apply Canny filter for Edge Detection
+	Canny(cannied, cannied , 100, 200, 3, false);
+
+	// Find contours
+	findContours( cannied, contours, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+	// CV_RETR_LIST
+
+
+	int k=0;
+	// print all the pixel coordinates in the contours
+	printf("\n--------------------------------------------\n");
+	for(size_t i=0; i<contours.size(); i++ ){
+		   // use contours[i] for the current contour
+			 for(size_t j=0; j<contours[i].size(); j++ ){
+			           // use contours[i][j] for current point
+								 if(j%20 == 0){
+									 //printf("\n%d %d",contours[i][j].x,contours[i][j].y);
+									 frontiers[k] = contours[i][j];
+									 k++;
+								 }
+			 }
+	}
+	printf("\n--------------------------------------------\n");
+
+	return k;
 
 }
 
