@@ -90,10 +90,10 @@ int update_rwk (struct node* n0){
  */
 void trace (struct node* n0,double g_time){
 
-/*	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,pause_time : %.3f,speed: %.3f>\n",
-			n0->node_id, n0->x,n0->y,n0->dstX,n0->dstY,n0->theta,n0->run_time,n0->rest_time,n0->speed);*/
+	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,pause_time : %.3f,speed: %.3f>\n",
+			n0->node_id, n0->x,n0->y,n0->dstX,n0->dstY,n0->theta,n0->run_time,n0->rest_time,n0->speed);
 			
-	printf("\n%d %0.3f %.3f %.3f",n0->node_id, g_time, n0->x, n0->y);
+//	printf("\n%d %0.3f %.3f %.3f",n0->node_id, g_time, n0->x, n0->y);
 
 }
 
