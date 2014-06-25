@@ -31,7 +31,9 @@ int loadMap(Mat *, struct node *, int);
  */
 void runHist(Mat *);
 
-double plot(Mat *);
+double plot(Mat *, Mat *, int, int);
+
+void initPlot(Mat*);
 
 
 /*

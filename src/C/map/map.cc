@@ -31,7 +31,7 @@ int initMap (Mat* matrix, int sizeX, int sizeY){
 int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
 	int x,y;
-	char str[10];
+	//char str[10];
 	/*
 	 * Iterate through the node locations till nodeCount
 	 * 	Draw circles at those locations in the map
@@ -55,7 +55,14 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
 }
 
-double plot(Mat* matrix){
+void initPlot(Mat* plotImg){
+
+	*plotImg = Mat(500, 1500, CV_8UC3);
+	plotImg->setTo(Scalar(255,255,255));
+
+}
+
+double plot(Mat* matrix,Mat* plotImg,int gTime,int plotStatus){
 
 
 	/* Calculate Coverage ( ratio of white to black )
@@ -64,11 +71,18 @@ double plot(Mat* matrix){
 	 * 	2] Binary threshold GrayScale image
 	 * 	3] call countNonZero() method
 	 */
+	char str[10];
 	Mat dst;
 	cvtColor(*matrix,dst,CV_BGR2GRAY,0);
 	threshold(dst,dst,10,255,THRESH_BINARY);
 
 	double coverage = (double)( countNonZero(dst)/(gMax_X*gMax_Y) );
+
+	circle( *plotImg, Point(gTime/5, 500 - (coverage*500) ), 2, Scalar(0,255,0), -1, 8, 0 );
+
+	if(plotStatus != 0)
+		imshow("My Plot",*plotImg);
+
 
 	return coverage;
 

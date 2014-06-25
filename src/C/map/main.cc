@@ -26,12 +26,11 @@ double gT_int = 1;
 
 int main(){
 
-	printf("\n>> Press Any Key to Continue...");
-
-	Mat matrix;
+	Mat matrix,plotImg;
 
 	initMap(&matrix,gMax_X,gMax_Y);
 
+	initPlot(&plotImg);
 	// set time interval
 	int t_int = 4;
 
@@ -51,7 +50,7 @@ int main(){
 	loadMap(&matrix,ni,gN);
 
 
-	imshow("My Map",matrix);
+	//imshow("My Map",matrix);
 
 	waitKey(0);
 
@@ -110,13 +109,10 @@ int main(){
 		 */
 
 		loadMap(&matrix,ni,gN);
-		imshow("My Map",matrix);
+		//imshow("My Map",matrix);
 
 		// Update Histogram
-		//runHist(&matrix);
-		printf("\nCoverage: %.4f", plot(&matrix)*100 );
-
-
+		printf("\n%.0f %.4f", gTime,plot(&matrix,&plotImg,(int)gTime ,0)*100 );
 
 		waitKey(1);
 
@@ -128,7 +124,7 @@ int main(){
 	}// end of WHILE
 
 	
-	waitKey(10);
+	waitKey(1);
 
 	return 0;
 
