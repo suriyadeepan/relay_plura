@@ -1,4 +1,4 @@
-## Optimal Multiple Relay Node Placement in Unstructured/Damaged/Disconnected Wireless Sensor Network ##
+## Optimal Multiple Relay Node Placement in Unstructured Damaged/Disconnected Wireless Sensor Network ##
 ==========================================================================================================
 
 ## About ##
