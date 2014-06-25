@@ -7,3 +7,8 @@
 ### Random Walk Simulation using OpenCV ###
 
 ![picture alt](  https://raw.githubusercontent.com/utortuga/relay_plura/master/screenshots/RandomWalk_Sim_opencv00.png "Random Walk Simulation using OpenCV")
+
+
+### Random Walk Coverage GNUPlot
+
+![picture alt]( https://raw.githubusercontent.com/utortuga/relay_plura/master/screenshots/RandomWalk_GNUPLOT.png "Random Walk Coverage GNUPlot" )
