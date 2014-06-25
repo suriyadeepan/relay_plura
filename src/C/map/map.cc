@@ -72,9 +72,42 @@ double plot(Mat* matrix,Mat* plotImg,int gTime,int plotStatus){
 	 * 	3] call countNonZero() method
 	 */
 	char str[10];
+
 	Mat dst;
+	Mat cannied;
+	vector<vector<Point> > contours;
+
 	cvtColor(*matrix,dst,CV_BGR2GRAY,0);
 	threshold(dst,dst,10,255,THRESH_BINARY);
+
+
+	Canny(dst, cannied , 100, 200, 3, false);
+
+	findContours( cannied, contours, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+	// CV_RETR_LIST
+	
+	Mat contourImg;
+	contourImg = Mat(500, 500, CV_8UC3);
+
+	//printf("\nNo. of contour : %d", (int)contours.size() );
+
+	for (size_t idx = 0; idx < contours.size(); idx++) {
+		drawContours(contourImg, contours, idx, Scalar(255,0,0) );
+	}
+
+	printf("\n--------------------------------------------\n");
+	for(size_t i=0; i<contours.size(); i++ ){
+		   // use contours[i] for the current contour
+			 for(size_t j=0; j<contours[i].size(); j++ ){
+			           // use contours[i][j] for current point
+								 if(j%10 == 0)
+									 printf("\n%d %d",contours[i][j].x,contours[i][j].y);
+			 }
+	}
+
+	printf("\n--------------------------------------------\n");
+
+
 
 	double coverage = (double)( countNonZero(dst)/(gMax_X*gMax_Y) );
 
@@ -83,6 +116,8 @@ double plot(Mat* matrix,Mat* plotImg,int gTime,int plotStatus){
 	if(plotStatus != 0)
 		imshow("My Plot",*plotImg);
 
+	//imshow("Edge Detection",cannied);
+	imshow("Mat00",contourImg);
 
 	return coverage;
 

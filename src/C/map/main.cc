@@ -50,7 +50,7 @@ int main(){
 	loadMap(&matrix,ni,gN);
 
 
-	//imshow("My Map",matrix);
+	imshow("My Map",matrix);
 
 	waitKey(0);
 
@@ -109,10 +109,13 @@ int main(){
 		 */
 
 		loadMap(&matrix,ni,gN);
-		//imshow("My Map",matrix);
+		imshow("My Map",matrix);
 
-		// Update Histogram
-		printf("\n%.0f %.4f", gTime,plot(&matrix,&plotImg,(int)gTime ,0)*100 );
+		// Get Coverage at time "gTime" and print it 
+		//  Log it to coverage_plot.dat
+		//   Plot it with GNUPlot
+		if((int)gTime % 10000 == 0)
+			printf("\n%.0f %.4f", gTime,plot(&matrix,&plotImg,(int)gTime ,0)*100 );
 
 		waitKey(1);
 
