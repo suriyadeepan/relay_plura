@@ -37,6 +37,12 @@ double getCoverage(Mat *);
 int getFrontiers(Mat *,Point *);
 
 /*
+ * Update the map with frontiers
+ */
+void updateFrontiers(Mat *, Point *, int );
+
+
+/*
  * Update the pixel values based on node locations
  */
 void updateMap (Mat *);

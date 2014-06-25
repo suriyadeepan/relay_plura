@@ -46,8 +46,27 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
 	}// END OF FOR
 
-	
+
+
 	return 0;
+
+}
+
+void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
+
+	Mat frontierMap;
+ 	(*matrix).copyTo(frontierMap);
+
+	/*
+	 * Update the map with frontiers
+	 */
+	for(int i=0; i<frontierCount; i++){
+
+		circle( frontierMap, frontiers[i], 2, Scalar(255,0,0), -1, 8, 0 );
+
+	}
+
+	imshow("Frontier Map",frontierMap);
 
 }
 
@@ -89,7 +108,7 @@ int getFrontiers(Mat *matrix, Point *frontiers){
 	threshold(cannied,cannied,10,255,THRESH_BINARY);
 
 	// Apply Canny filter for Edge Detection
-	Canny(cannied, cannied , 100, 200, 3, false);
+	Canny(cannied, cannied , 10, 240, 3, false);
 
 	// Find contours
 	findContours( cannied, contours, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
@@ -98,7 +117,6 @@ int getFrontiers(Mat *matrix, Point *frontiers){
 
 	int k=0;
 	// print all the pixel coordinates in the contours
-	printf("\n--------------------------------------------\n");
 	for(size_t i=0; i<contours.size(); i++ ){
 		   // use contours[i] for the current contour
 			 for(size_t j=0; j<contours[i].size(); j++ ){
@@ -110,7 +128,6 @@ int getFrontiers(Mat *matrix, Point *frontiers){
 								 }
 			 }
 	}
-	printf("\n--------------------------------------------\n");
 
 	return k;
 

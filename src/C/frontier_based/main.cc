@@ -110,11 +110,12 @@ int main(){
 		 */
 
 		loadMap(&matrix,ni,gN);
+		updateFrontiers(&matrix, frontiers, frontiersCount);
 		imshow("My Map",matrix);
 
 		// Get Coverage and log it
-		if( (int)gTime % 1000 == 0){
-			printf("\n%.0f %.4f", gTime, getCoverage(&matrix) * 100 );
+		if( (int)gTime % 100 == 0){
+			//printf("\n%.0f %.4f", gTime, getCoverage(&matrix) * 100 );
 			frontiersCount = getFrontiers(&matrix,frontiers);
 		}
 
