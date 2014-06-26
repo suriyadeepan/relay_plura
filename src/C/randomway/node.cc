@@ -48,7 +48,7 @@ int nodeLocalizedInit (struct node* n0, int node_id, double x, double y){
 /*
  * Write something about move
  */
-int move (struct node* n0, double dstX, double dstY, double speed, double rest_time){
+int move_rwy (struct node* n0, double dstX, double dstY, double speed, double rest_time){
 
 	n0->dstX = dstX;	n0->dstY = dstY;	n0->speed = speed; n0->rest_time = rest_time;
 
@@ -58,17 +58,32 @@ int move (struct node* n0, double dstX, double dstY, double speed, double rest_t
 	// find and set theta
 	n0->theta = calcTheta(n0->x,n0->y,n0->dstX,n0->dstY);
 
+	return 0;
+}
+
+int move_rwk (struct node* n0, double speed, double theta){
+	n0->speed = speed; 	n0->theta = theta; 
+	return 0;
 }
 
 /*
  * Write something about update
  */
-int update (struct node* n0, double x, double y, double run_time){
+int update_rwy (struct node* n0, double x, double y, double run_time){
 
 	n0->x = x; n0->y = y; n0->run_time = run_time;
+	return 0;
 
 }
 
+int update_rwk (struct node* n0){
+
+	double d = n0->speed * gT_int;
+	n0->x = n0->x + d*cos( n0->theta * 22 / (7 * 180) );
+	n0->y = n0->y + d*sin( n0->theta * 22 / (7 * 180) );
+	return 0;
+
+}
 
 /*
  * Write something about trace

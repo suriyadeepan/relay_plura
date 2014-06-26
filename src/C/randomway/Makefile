@@ -1,8 +1,6 @@
-main:  main.o node.o
-	gcc main.o node.o -o main.bin -lm
-
-main.o:  main.c node.c
-	gcc -c node.c main.c 
+main:  main.cc node.cc map.cc
+	g++ *.cc `pkg-config opencv --libs` -o main.exe
+	rm -f *.o
 
 clean:
-	rm -f *.o *~ *.bin
+	rm -f *.o *~ *.exe

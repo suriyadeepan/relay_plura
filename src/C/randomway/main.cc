@@ -4,23 +4,39 @@
 #include "math.h"
 
 #include "node.h"
+#include "map.h"
+
 
 double gTime = 0;
 
-int main(){
+double gMax_Pause;
+
+
+
 
 	// Get necessary parameters from user 
 	//  Map/Grid Dimensions
-	gMax_X = 250;
-	gMax_Y = 250;
+double	gMax_X = 500;
+double	gMax_Y = 500;
 	//  #nodes
-	gN = 5;
+double	gN = 5;
 	//	Run Time
-	gRunTime = 10000;
+double	gRunTime = 100000;
 	//  Max Speed
-	gMax_Speed = 2;
-	//  Max Pause Time
-	gMax_Pause = 3;
+double	gMax_Speed = 5;
+
+	// set time resolution
+double gT_int = 1;
+
+
+int main(){
+
+	Mat matrix;
+
+	initMap(&matrix,gMax_X,gMax_Y);
+
+	// set time interval
+	int t_int = 4;
 
 	int i;
 
@@ -35,15 +51,21 @@ int main(){
 	for(i=0;i<gN;i++)
 		nodeInit(&ni[i],i);
 
+	loadMap(&matrix,ni,gN);
+
+
+	imshow("My Map",matrix);
+
+	waitKey(0);
+
 //	printf("\nnode id : %d\n",ni[0].node_id);
 
 
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
 
-		// Iterate through the nodes
+			// Iterate through the nodes
 		for(i=0;i<gN;i++){
-
 
 			// Check if the node has runtime left or not
 			if( ni[i].run_time > 0.0 ){
@@ -55,7 +77,7 @@ int main(){
 						ni[i].theta += 180;
 					else
 						ni[i].theta = ni[i].theta - 180;
-					//ni[i].speed = gMax_Speed;
+						//ni[i].speed = gMax_Speed/2;
 				}
 
 				double offset = ni[i].x;
@@ -80,7 +102,7 @@ int main(){
 
 					srand(clock()+i);
 
-					move ( &ni[i],( (double)rand()/(double)RAND_MAX ) * gMax_X,
+					move_rwy ( &ni[i],( (double)rand()/(double)RAND_MAX ) * gMax_X,
 								 				( (double)rand()/(double)RAND_MAX ) * gMax_Y,
 												( (double)rand()/(double)RAND_MAX ) * gMax_Speed,
 												( (double)rand()/(double)RAND_MAX ) * gMax_Pause );
@@ -92,15 +114,42 @@ int main(){
 			}// end of NO_RUNTIME_LEFT condition
 
 
-
 		}// end of FOR
 
- 	 //Snapshot of node locations @ time "gTime"
-	 snapshot(&ni[0],gTime);
+		/* 
+		 * Update the map with current coordinates of nodes
+		 * 	FIX IT : add static/mobile flag to struct node
+		 *
+		 */
 
-	 gTime += 0.2;
+		loadMap(&matrix,ni,gN);
+		imshow("My Map",matrix);
+
+		char ch = waitKey(3);
+
+		switch(ch){
+
+			case 'q':
+				printf("\n\n***FORCE QUIT BY User***\n");
+				return -1;
+
+			case 'p':
+				waitKey(0);
+		}
+
+ 	 //Snapshot of node locations @ time "gTime"
+	 //snapshot(&ni[0],gTime);
+	 double coverage = getCoverage(&matrix)*100;
+
+	 printf("\n%.2f %.4f",gTime,coverage);
+
+	 gTime += gT_int;
+
 
 	}// end of WHILE
+
+	
+	//waitKey(1);
 
 	return 0;
 

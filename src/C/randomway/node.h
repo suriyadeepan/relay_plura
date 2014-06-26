@@ -50,13 +50,15 @@ int nodeLocalizedInit (struct node*,int,double,double);
 /*
  * Write something about move
  */
-int move (struct node*,double,double,double,double);
+int move_rwy (struct node*,double,double,double,double);
+int move_rwk (struct node*,double,double);
 
 
 /*
  * Write something about update
  */
-int update (struct node*,double,double,double);
+int update_rwy (struct node*,double,double,double);
+int update_rwk (struct node*);
 
 
 /*
@@ -79,13 +81,15 @@ double calcDist (double ,double ,double ,double );
 
 
 /*
- * Global Variables
+ * extern Global Variables
  */
-double gMax_X;
-double gMax_Y;
-double gMax_Speed;
-double gMax_Pause;
-double gN;
-double gRunTime;
+extern double gMax_X;
+extern double gMax_Y;
+extern double gMax_Speed;
+extern double gMax_Pause;
+extern double gN;
+extern double gRunTime;
+
+extern double gT_int;
 
 #endif
