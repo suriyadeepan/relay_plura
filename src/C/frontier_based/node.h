@@ -1,6 +1,10 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "opencv2/opencv.hpp"
+
+using namespace cv;
+
 struct node{
 	
 	// set in the constructor
@@ -78,6 +82,8 @@ void snapshot (struct node*,double);
 double calcTheta(double ,double ,double ,double );
 
 double calcDist (double ,double ,double ,double );
+
+int closestPoint(Point *, int, int, int);
 
 
 /*

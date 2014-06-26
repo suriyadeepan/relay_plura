@@ -63,8 +63,6 @@ int main(int argc,char** argv){
 
 	waitKey(0);
 
-	//srand(time(NULL));
-	srand(static_cast<int>(time(0)));
 
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
@@ -79,7 +77,9 @@ int main(int argc,char** argv){
 			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 5){
 
 				// Find a random frontier to approach next
-				int frontierId = (int) ( (double)rand()/(double)RAND_MAX ) * frontiersCount; 
+				int frontierId = closestPoint(frontiers,frontiersCount,ni[i].x,ni[i].y);
+
+				//printf("\nNode %d : Frontier ID %d",i,frontierId);
 
 				// set the next destination of the node as the selected frontier's loca
 				ni[i].dstX = frontiers[frontierId].x;
@@ -112,7 +112,7 @@ int main(int argc,char** argv){
 			if(ni[i].x >= gMax_X - 20 || ni[i].y >= gMax_Y - 20 || ni[i].x <= 20 || ni[i].y <= 20 ){
 
 				// Find a random frontier to approach next
-				int frontierId = (int) ( (double)rand()/(double)RAND_MAX ) * frontiersCount; 
+				int frontierId = closestPoint(frontiers,frontiersCount,ni[i].x,ni[i].y);
 
 				// set the next destination of the node as the selected frontier's loca
 				ni[i].dstX = frontiers[frontierId].x;
@@ -139,18 +139,16 @@ int main(int argc,char** argv){
 		imshow("My Map",matrix);
 
 		// Get Coverage and log it
-		if( (int)gTime % 100 == 0){
+//		if( (int)gTime % 100 == 0){
 			//Snapshot of node locations @ time "gTime"
 			//snapshot(&ni[0],gTime);
-			srand(static_cast<int>(time(0)));
-			//srand(time(NULL));
-			//printf("\n%.0f %.4f", gTime, getCoverage(&matrix) * 100 );
 			coverage = getCoverage(&matrix) * 100;
-		}
+			printf("\n%.0f %.4f", gTime,coverage); 
+//		}
 
 		waitKey(1);
 
-		if(coverage > 99)
+		if(coverage > 99.99)
 			break;
 
 	 gTime += gT_int;

@@ -90,10 +90,10 @@ int update_rwk (struct node* n0){
  */
 void trace (struct node* n0,double g_time){
 
-	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,pause_time : %.3f,speed: %.3f>\n",
-			n0->node_id, n0->x,n0->y,n0->dstX,n0->dstY,n0->theta,n0->run_time,n0->rest_time,n0->speed);
+/*	printf("\n<id: %d,x: %.3f,y: %.3f,dstX: %.3f,dstY: %.3f,theta: %.3f,run_time: %.3f,pause_time : %.3f,speed: %.3f>\n",
+			n0->node_id, n0->x,n0->y,n0->dstX,n0->dstY,n0->theta,n0->run_time,n0->rest_time,n0->speed);*/
 			
-//	printf("\n%d %0.3f %.3f %.3f",n0->node_id, g_time, n0->x, n0->y);
+	printf("\n%d %0.3f %.3f %.3f",n0->node_id, g_time, n0->x, n0->y);
 
 }
 
@@ -117,6 +117,32 @@ double calcTheta(double x1,double y1,double x2,double y2){
 
 double calcDist (double x1,double y1,double x2,double y2){
 	return sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) );
+}
+
+/*
+ * Find the point that is closest to the given point
+ * 	from an array of points
+ */
+int closestPoint(Point *pt, int pointsCount, int x, int y){
+
+	int id = 0;
+
+	int dist = calcDist(pt[id].x,pt[id].y,x,y);
+
+	//printf("\nDist : %d",dist);
+
+	for(int i=0; i<pointsCount; ++i){
+
+		int tempDist = calcDist(pt[i].x, pt[i].y, x, y);
+
+		if( tempDist < dist ){
+			dist = tempDist; id = i;
+		}
+
+	}
+
+	return id;
+
 }
 
 
