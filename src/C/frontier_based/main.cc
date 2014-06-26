@@ -183,11 +183,16 @@ int main(int argc,char** argv){
 
 		char ch = waitKey(10);
 
-		if(ch == 'q')
-			break;
+		switch(ch){
 
-		else if(ch == 'p')
-			sleep(5);
+			case 'q':
+				printf("\n\n**** FORCE QUIT by User ****\n");
+				return -1;
+
+			case 'p':
+				waitKey(0);
+		}
+
 
 		if(coverage > 99.99)
 			break;
