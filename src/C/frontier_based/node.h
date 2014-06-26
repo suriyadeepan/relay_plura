@@ -93,7 +93,7 @@ extern double gMax_X;
 extern double gMax_Y;
 extern double gMax_Speed;
 extern double gMax_Pause;
-extern double gN;
+extern const int gN;
 extern double gRunTime;
 
 extern double gT_int;

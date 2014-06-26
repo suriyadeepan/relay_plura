@@ -2,6 +2,7 @@
 #include "stdlib.h"
 #include "time.h"
 #include "math.h"
+#include "unistd.h"
 
 #include "node.h"
 #include "map.h"
@@ -14,7 +15,7 @@ double gTime = 0;
 double	gMax_X = 500;
 double	gMax_Y = 500;
 	//  #nodes
-double	gN = 5;
+const int	gN = 5;
 	//	Run Time
 double	gRunTime = 100000;
 	//  Max Speed
@@ -24,9 +25,32 @@ double	gMax_Speed = 1;
 double gT_int = 1;
 
 
-/* Frontiers */
+/* 
+ * Frontiers 
+ * 	
+ * Point	frontiers[200] 
+ * 	=> contains coordinates of all frontiers
+ *
+ * int frontierCount 
+ * 	=> num of frontiers
+ *
+ * int utility[200]
+ * 	=> contains utility values of corresponding frontiers
+ *
+ * int assigned[gN]
+ * 	=> contains id of frontiers assigned to nodes
+ * 
+ * int numAssigned
+ * 	=> num of nodes assigned with a frontier
+ */
 Point frontiers[200];
 int frontiersCount = 0;
+int utility[200];
+int assigned[gN];
+int numAssigned = 0;
+
+
+
 
 double coverage = 0.0;
 
@@ -53,7 +77,8 @@ int main(int argc,char** argv){
 	loadMap(&matrix,ni,gN);
 
 	// Obtain Frontiers
-	frontiersCount = getFrontiers(&matrix,frontiers);
+	frontiersCount = getFrontiers(&matrix,frontiers,utility);
+	//printf("\nFrontierCount : %d",frontiersCount);
 
 	// Update the map with frontiers
 	updateFrontiers(&matrix, frontiers, frontiersCount);
@@ -76,10 +101,20 @@ int main(int argc,char** argv){
 			// if the nodes has reached the destination (or came kinda close)
 			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 5){
 
-				// Find a random frontier to approach next
-				int frontierId = closestPoint(frontiers,frontiersCount,ni[i].x,ni[i].y);
+				// Find the frontier that offers maximum
+				//  value function
+				int frontierId = assignBestFrontier(&ni[i],frontiers,frontiersCount,
+						utility, assigned, numAssigned);
 
-				//printf("\nNode %d : Frontier ID %d",i,frontierId);
+				//printf("frontierId : %d\n",frontierId);
+
+				// Assign the frontier as destination to current node
+				if(numAssigned < 5){
+					assigned[numAssigned] = frontierId;
+					numAssigned++;
+				}
+				else
+					assigned[i] = frontierId;
 
 				// set the next destination of the node as the selected frontier's loca
 				ni[i].dstX = frontiers[frontierId].x;
@@ -109,9 +144,9 @@ int main(int argc,char** argv){
 				// if out of bounds
 				//  we need Reflecting boundaries
 				//   *** DO WE NOW?? ***
-			if(ni[i].x >= gMax_X - 20 || ni[i].y >= gMax_Y - 20 || ni[i].x <= 20 || ni[i].y <= 20 ){
+			/*if(ni[i].x >= gMax_X - 20 || ni[i].y >= gMax_Y - 20 || ni[i].x <= 20 || ni[i].y <= 20 ){
 
-				// Find a random frontier to approach next
+				// Find the closest frontier to approach next
 				int frontierId = closestPoint(frontiers,frontiersCount,ni[i].x,ni[i].y);
 
 				// set the next destination of the node as the selected frontier's loca
@@ -121,7 +156,7 @@ int main(int argc,char** argv){
 				// update the direction/angle (theta)
 				ni[i].theta = calcTheta( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY );
 
-			}
+			}*/
 
 
 		}// end of FOR
@@ -133,7 +168,7 @@ int main(int argc,char** argv){
 		 */
 
 		loadMap(&matrix,ni,gN);
-		frontiersCount = getFrontiers(&matrix,frontiers);
+		frontiersCount = getFrontiers(&matrix,frontiers,utility);
 		updateFrontiers(&matrix, frontiers, frontiersCount);
 
 		imshow("My Map",matrix);
@@ -146,7 +181,13 @@ int main(int argc,char** argv){
 			printf("\n%.0f %.4f", gTime,coverage); 
 //		}
 
-		waitKey(1);
+		char ch = waitKey(10);
+
+		if(ch == 'q')
+			break;
+
+		else if(ch == 'p')
+			sleep(5);
 
 		if(coverage > 99.99)
 			break;

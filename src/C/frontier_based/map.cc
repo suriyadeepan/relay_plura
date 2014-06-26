@@ -96,7 +96,7 @@ double getCoverage(Mat* matrix ){
 
 }
 
-int getFrontiers(Mat *matrix, Point *frontiers){
+int getFrontiers(Mat *matrix, Point *frontiers,int *utility){
 
 	Mat cannied;
 	vector<vector<Point> > contours;
@@ -124,6 +124,7 @@ int getFrontiers(Mat *matrix, Point *frontiers){
 								 if(j%20 == 0){
 									 //printf("\n%d %d",contours[i][j].x,contours[i][j].y);
 									 frontiers[k] = contours[i][j];
+									 utility[k] = 1;
 									 k++;
 								 }
 			 }
@@ -140,11 +141,11 @@ int getFrontiers(Mat *matrix, Point *frontiers){
  *
  * Assign it to the node
  */
-void assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int *utility,
+int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int *utility,
 	 	int *assigned, int numAssigned){
 
 	int frontierId = 0;
-	int maxVal = 0;
+	int maxVal = -10000;
 
 	// Iterate through the frontiers
 	for(int i=0; i<frontierCount; i++){
@@ -182,10 +183,15 @@ void assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int
 
 	}// END OF FOR
 
-	// Assigned chosen frontier ( based on value function ) to the node
+	// Assign chosen frontier ( based on value function ) to the node
 	n0->dstX = frontiers[frontierId].x;
 	n0->dstY = frontiers[frontierId].y;
 
+	// update assigned[] and numAssigned
+	/*assigned[numAssigned] = frontierId;
+	numAssigned++;*/
+
+	return frontierId;
 
 }
 

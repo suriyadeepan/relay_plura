@@ -34,12 +34,12 @@ double getCoverage(Mat *);
 /*
  * Find the frontiers using Edge Detection Filter
  */
-int getFrontiers(Mat *,Point *);
+int getFrontiers(Mat *,Point *,int *);
 
 /*
  * Update the map with frontiers
  */
-void updateFrontiers(Mat *, Point *, int );
+void updateFrontiers(Mat *, Point *, int);
 
 /*
  * Find the best possible frontier to explore for a particular node
@@ -47,7 +47,7 @@ void updateFrontiers(Mat *, Point *, int );
  *
  * Assign it to the node
  */
-void assignBestFrontier(struct node *, Point *, int, int *, int *, int);
+int assignBestFrontier(struct node *, Point *, int, int *, int *, int);
 
 
 /*
