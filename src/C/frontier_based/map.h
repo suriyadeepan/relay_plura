@@ -41,6 +41,14 @@ int getFrontiers(Mat *,Point *);
  */
 void updateFrontiers(Mat *, Point *, int );
 
+/*
+ * Find the best possible frontier to explore for a particular node
+ *  based on Value Function = ( Utility - Cost )
+ *
+ * Assign it to the node
+ */
+void assignBestFrontier(struct node *, Point *, int, int *, int *, int);
+
 
 /*
  * Update the pixel values based on node locations

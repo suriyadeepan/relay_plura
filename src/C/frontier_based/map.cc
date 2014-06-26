@@ -135,6 +135,65 @@ int getFrontiers(Mat *matrix, Point *frontiers){
 
 
 /*
+ * Find the best possible frontier to explore for a particular node
+ *  based on Value Function = ( Utility - Cost )
+ *
+ * Assign it to the node
+ */
+void assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int *utility,
+	 	int *assigned, int numAssigned){
+
+	int frontierId = 0;
+	int maxVal = 0;
+
+	// Iterate through the frontiers
+	for(int i=0; i<frontierCount; i++){
+
+		/*
+		 * To calculate Utility,
+		 * 	iterate through the assigned frontiers array
+		 *
+		 * Update Utility
+		 */
+		for(int j=0; j<numAssigned; j++){
+
+			// calculated distance between frontier[i] and (assigned) frontier[ assigned[j] ]
+			int dist = calcDist(frontiers[i].x,frontiers[i].y,frontiers[assigned[j]].x,
+					frontiers[assigned[j]].y);
+			
+			// set utility
+			if( dist < 100)
+				utility[i] -= ( 1 - (dist/100) ); 
+
+		}//END OF FOR
+
+		// Calculate cost for frontier[i]
+		double cost = calcDist( frontiers[i].x,frontiers[i].y, n0->x, n0->y );
+
+		// Calculate Value Function
+		double value = utility[i] - cost;
+
+		// Find the maximum value function
+		if(maxVal < value){
+			maxVal = value;
+			frontierId = i;
+		}
+
+
+	}// END OF FOR
+
+	// Assigned chosen frontier ( based on value function ) to the node
+	n0->dstX = frontiers[frontierId].x;
+	n0->dstY = frontiers[frontierId].y;
+
+
+}
+
+
+
+
+
+/*
  * Update the pixel values based on node locations
  */
 void updateMap (struct map *);
