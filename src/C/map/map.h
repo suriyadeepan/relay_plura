@@ -27,13 +27,10 @@ int initMap (Mat *, int, int );
 int loadMap(Mat *, struct node *, int);
 
 /*
- * Calculate Histogram
+ * Calculate coverage
  */
-void runHist(Mat *);
+double getCoverage(Mat *);
 
-double plot(Mat *, Mat *, int, int);
-
-void initPlot(Mat*);
 
 
 /*

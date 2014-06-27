@@ -54,12 +54,14 @@ int main(){
 	loadMap(&matrix,ni,gN);
 
 
-	imshow("My Map",matrix);
+	//imshow("My Map",matrix);
 
-	waitKey(0);
+	//waitKey(0);
 
 //	printf("\nnode id : %d\n",ni[0].node_id);
 
+	// start clock
+	clock_t t1 = clock();
 
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
@@ -123,9 +125,9 @@ int main(){
 		 */
 
 		loadMap(&matrix,ni,gN);
-		imshow("My Map",matrix);
+		//imshow("My Map",matrix);
 
-		char ch = waitKey(3);
+		/*char ch = waitKey(3);
 
 		switch(ch){
 
@@ -135,13 +137,16 @@ int main(){
 
 			case 'p':
 				waitKey(0);
-		}
+		}*/
 
  	 //Snapshot of node locations @ time "gTime"
 	 //snapshot(&ni[0],gTime);
 	 double coverage = getCoverage(&matrix)*100;
+	 printf("\n%.0f %.4f",( (double)(clock() - t1)/ 1000000.0F ) * 1000
+					,coverage); 
 
-	 printf("\n%.2f %.4f",gTime,coverage);
+	 if(coverage > 99)
+		 break;
 
 	 gTime += gT_int;
 

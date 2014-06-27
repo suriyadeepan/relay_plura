@@ -172,7 +172,12 @@ int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int 
 		double cost = calcDist( frontiers[i].x,frontiers[i].y, n0->x, n0->y );
 
 		// Calculate Value Function
-		double value = utility[i] - cost;
+		double value = (50*utility[i]) - cost;
+
+		/* Debug
+		 *
+		 * printf("\nnodeid : %d, Frontier : %d, Value : %.3f",n0->node_id,i,value);
+		 */
 
 		// Find the maximum value function
 		if(maxVal < value){

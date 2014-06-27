@@ -50,8 +50,6 @@ int assigned[gN];
 int numAssigned = 0;
 
 
-
-
 double coverage = 0.0;
 
 int main(int argc,char** argv){
@@ -88,6 +86,9 @@ int main(int argc,char** argv){
 
 	waitKey(0);
 
+	clock_t t1,t2;
+	// Start clock
+	t1 = clock();
 
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
@@ -141,23 +142,6 @@ int main(int argc,char** argv){
 			}
 
 
-				// if out of bounds
-				//  we need Reflecting boundaries
-				//   *** DO WE NOW?? ***
-			/*if(ni[i].x >= gMax_X - 20 || ni[i].y >= gMax_Y - 20 || ni[i].x <= 20 || ni[i].y <= 20 ){
-
-				// Find the closest frontier to approach next
-				int frontierId = closestPoint(frontiers,frontiersCount,ni[i].x,ni[i].y);
-
-				// set the next destination of the node as the selected frontier's loca
-				ni[i].dstX = frontiers[frontierId].x;
-				ni[i].dstY = frontiers[frontierId].y;
-
-				// update the direction/angle (theta)
-				ni[i].theta = calcTheta( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY );
-
-			}*/
-
 
 		}// end of FOR
 
@@ -178,7 +162,8 @@ int main(int argc,char** argv){
 			//Snapshot of node locations @ time "gTime"
 			//snapshot(&ni[0],gTime);
 			coverage = getCoverage(&matrix) * 100;
-			printf("\n%.0f %.4f", gTime,coverage); 
+			printf("\n%.0f %.4f",( (double)(clock() - t1)/ 1000000.0F ) * 1000
+					,coverage); 
 //		}
 
 		char ch = waitKey(10);
