@@ -66,7 +66,7 @@ void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
 
 	}
 
-	imshow("Frontier Map",frontierMap);
+	//imshow("Frontier Map",frontierMap);
 
 }
 
@@ -161,7 +161,7 @@ int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int 
 			// calculated distance between frontier[i] and (assigned) frontier[ assigned[j] ]
 			int dist = calcDist(frontiers[i].x,frontiers[i].y,frontiers[assigned[j]].x,
 					frontiers[assigned[j]].y);
-			
+		
 			// set utility
 			if( dist < 100)
 				utility[i] -= ( 1 - (dist/100) ); 
@@ -172,7 +172,7 @@ int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int 
 		double cost = calcDist( frontiers[i].x,frontiers[i].y, n0->x, n0->y );
 
 		// Calculate Value Function
-		double value = (50*utility[i]) - cost;
+		double value = (10 * utility[i]) -  cost;
 
 		/* Debug
 		 *

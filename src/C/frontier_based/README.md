@@ -1,5 +1,5 @@
 
-## Frontier based Exploration with Greedy Approach ##
+## Frontier based Exploration with Utility vs Cost Approach ##
 --------------------------------
 
 	Frontier is the boundary between the explored and the unexplored regions of a map

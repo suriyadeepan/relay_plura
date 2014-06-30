@@ -15,7 +15,7 @@ double gTime = 0;
 double	gMax_X = 500;
 double	gMax_Y = 500;
 	//  #nodes
-const int	gN = 5;
+const int	gN = 3;
 	//	Run Time
 double	gRunTime = 100000;
 	//  Max Speed
@@ -24,6 +24,7 @@ double	gMax_Speed = 1;
 	// set time resolution
 double gT_int = 1;
 
+double gTotalDist;
 
 /* 
  * Frontiers 
@@ -82,9 +83,9 @@ int main(int argc,char** argv){
 	updateFrontiers(&matrix, frontiers, frontiersCount);
 
 	// Display the initial Map with frontiers
-	imshow("My Map",matrix);
+	//imshow("My Map",matrix);
 
-	waitKey(0);
+	//waitKey(0);
 
 	clock_t t1,t2;
 	// Start clock
@@ -110,7 +111,7 @@ int main(int argc,char** argv){
 				//printf("frontierId : %d\n",frontierId);
 
 				// Assign the frontier as destination to current node
-				if(numAssigned < 5){
+				if(numAssigned < gN){
 					assigned[numAssigned] = frontierId;
 					numAssigned++;
 				}
@@ -120,6 +121,9 @@ int main(int argc,char** argv){
 				// set the next destination of the node as the selected frontier's loca
 				ni[i].dstX = frontiers[frontierId].x;
 				ni[i].dstY = frontiers[frontierId].y;
+
+				if(i==0)
+					gTotalDist += calcDist(ni[i].x,ni[i].y,ni[i].dstX,ni[i].dstY);
 
 				// update the direction/angle (theta)
 				ni[i].theta = calcTheta( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY );
@@ -155,15 +159,15 @@ int main(int argc,char** argv){
 		frontiersCount = getFrontiers(&matrix,frontiers,utility);
 		updateFrontiers(&matrix, frontiers, frontiersCount);
 
-		imshow("My Map",matrix);
+		//imshow("My Map",matrix);
 
 		// Get Coverage and log it
 //		if( (int)gTime % 100 == 0){
 			//Snapshot of node locations @ time "gTime"
 			//snapshot(&ni[0],gTime);
 			coverage = getCoverage(&matrix) * 100;
-			printf("\n%.0f %.4f",( (double)(clock() - t1)/ 1000000.0F ) * 1000
-					,coverage); 
+			/*printf("\n%.0f %.4f",( (double)(clock() - t1)/ 1000000.0F ) * 1000
+					,coverage);*/ 
 //		}
 
 		char ch = waitKey(10);
@@ -187,7 +191,8 @@ int main(int argc,char** argv){
 	}// end of WHILE
 
 	
-	waitKey(1);
+	//waitKey(1);
+	printf("\n\n%.4f\n",gTotalDist);
 
 	return 0;
 
