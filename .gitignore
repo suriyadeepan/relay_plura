@@ -5,3 +5,4 @@ build/
 *.dat
 *.ns2
 workspace/
+*swp
