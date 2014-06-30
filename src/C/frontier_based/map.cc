@@ -41,8 +41,8 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 		y = (int) *(&n0[i].y);
 
 
-		circle( *matrix, Point(x,y), 40, Scalar(255,255,255), -1, 8, 0 );
-		circle( *matrix, Point(x,y), 10, Scalar(0,255,0), -1, 8, 0 );
+		circle( *matrix, Point(x,y), (int)*(&n0[i].pl), Scalar(255,255,255), -1, 8, 0 );
+		circle( *matrix, Point(x,y), 6, Scalar(0,255,0), -1, 8, 0 );
 
 	}// END OF FOR
 
@@ -66,7 +66,7 @@ void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
 
 	}
 
-	//imshow("Frontier Map",frontierMap);
+	imshow("Frontier Map",frontierMap);
 
 }
 

@@ -28,7 +28,7 @@ struct node{
 	double theta;
 
 	/* Updated every TIME_RESOLUTION time units
-	 * 	
+	0 * 	
 	 * 	run_time = run_time - TIME_RESOLUTION
 	 *  
 	 * When run_time becomes 0 move() function is called and
@@ -40,13 +40,23 @@ struct node{
 	 *  selected randomly everytime the node stops
 	 */
 	double rest_time;
+
+	/*
+	 * Type -> mobile/static
+	 */
+	int type;
+
+	/*
+	 * Set Power level
+	 */
+	int pl;
 	
 
 };
 
 // Constructors
 
-int nodeInit (struct node* ,int);
+int nodeInit (struct node* ,int, int,int);
 int nodeLocalizedInit (struct node*,int,double,double);
 
 // General Utility Functions

@@ -70,7 +70,7 @@ int main(int argc,char** argv){
 	 * Initialize Nodes
 	 */
 	for(int i=0;i<gN;i++)
-		nodeInit(&ni[i],i);
+		nodeInit(&ni[i],i,1,15+(i*10));
 
 	// Load Map with nodes
 	loadMap(&matrix,ni,gN);
@@ -170,7 +170,7 @@ int main(int argc,char** argv){
 					,coverage);*/ 
 //		}
 
-		char ch = waitKey(10);
+		char ch = waitKey(5);
 
 		switch(ch){
 

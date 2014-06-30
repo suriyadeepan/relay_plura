@@ -6,7 +6,7 @@
 #include "time.h"
 
 
-int nodeInit (struct node* n0, int node_id){
+int nodeInit (struct node* n0, int node_id, int type,int pl){
 	
 	n0->node_id = node_id;
 		
@@ -24,6 +24,12 @@ int nodeInit (struct node* n0, int node_id){
 
 	n0->dstX = n0->x;
 	n0->dstY = n0->y;
+
+	// set type 
+	n0->type = type;
+
+	// set powerlevel
+	n0->pl = pl;
 
 	return 0;
 }
