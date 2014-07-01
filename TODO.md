@@ -2,7 +2,7 @@
 	- [x] intensive observation of the code of new approach ( with printf statements )
 	- [x] test destination for different sources
 	- [x] concrete "value" function
-	- [ ] find best destination for a given node
+	- [x] find best destination for a given node
 	- [ ] add this as function to map.cc
 	- [ ] Pause after determination of destination of each node
-	- [ ] NAIL IT
+	- [ ] you missed a spot
