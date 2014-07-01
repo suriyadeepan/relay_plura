@@ -4,6 +4,5 @@ build/
 *.exe
 *.dat
 *.ns2
-
-*swp
 workspace/
+*swp

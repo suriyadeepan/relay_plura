@@ -93,6 +93,8 @@ double calcTheta(double ,double ,double ,double );
 
 double calcDist (double ,double ,double ,double );
 
+void calcSines (double ,double ,double ,double ,double *,double *);
+
 int closestPoint(Point *, int, int, int);
 
 

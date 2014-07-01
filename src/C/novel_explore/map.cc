@@ -46,8 +46,6 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
 	}// END OF FOR
 
-
-
 	return 0;
 
 }
@@ -133,6 +131,71 @@ int getFrontiers(Mat *matrix, Point *frontiers,int *utility){
 	return k;
 
 }
+
+void setBestDestination(struct node *n0,Mat *mat){
+
+	Mat bwMat;
+
+	cvtColor( (*mat), bwMat, CV_BGR2GRAY );
+	threshold(bwMat,bwMat,10,255,THRESH_BINARY);
+
+	//imshow("bw",bwMat);
+	//waitKey(0);
+
+	// set step
+	int d = 15;
+
+	// D -> dist. b/w node and dest
+	double D = 0.0;
+
+	int maxUtil = 0;
+
+	for(int a=0; a <= gMax_X; a+=25){
+
+		for(int b=0; b <= gMax_Y; b+=25){
+
+			double sv=0.0,cv=0.0;
+
+			// get dist
+			D = calcDist(n0->x,n0->y,a,b);
+
+			// get sine, cosine values
+			calcSines(n0->x,n0->y,a,b,&sv,&cv);
+
+			int util=0;
+
+			// calculate utility
+			for(int i=0;i<(int)(D/d);i++){
+
+				// print points along the line
+				int x = (int) ( d*(i+1)*cv )  + n0->x;
+				int y = (int) ( d*(i+1)*sv )  + n0->y;
+
+				if( (int)(bwMat.at<unsigned char>(x,y)/255) != 0)
+					util -= 10;
+
+				else
+					util += 1;
+
+			}
+
+//			dst.at<unsigned char>(a/25,b/25) = util*80;
+
+			if(maxUtil < util){
+				maxUtil = util;
+				n0->dstX = a/25;
+				n0->dstY = b/25;
+			}
+
+		}
+
+	}
+
+
+
+}
+
+
 
 
 /*

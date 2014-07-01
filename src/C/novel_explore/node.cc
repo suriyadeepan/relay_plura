@@ -125,6 +125,15 @@ double calcDist (double x1,double y1,double x2,double y2){
 	return sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) );
 }
 
+void calcSines (double x0,double y0,double x1,double y1,double* sv,double* cv){
+
+	double theta = atan2(y1-y0, x1-x0);
+	
+	*(sv) = sin(theta);
+	*(cv) = cos(theta);
+
+}
+
 /*
  * Find the point that is closest to the given point
  * 	from an array of points

@@ -26,31 +26,6 @@ double gT_int = 1;
 
 double gTotalDist;
 
-/* 
- * Frontiers 
- * 	
- * Point	frontiers[200] 
- * 	=> contains coordinates of all frontiers
- *
- * int frontierCount 
- * 	=> num of frontiers
- *
- * int utility[200]
- * 	=> contains utility values of corresponding frontiers
- *
- * int assigned[gN]
- * 	=> contains id of frontiers assigned to nodes
- * 
- * int numAssigned
- * 	=> num of nodes assigned with a frontier
- */
-Point frontiers[200];
-int frontiersCount = 0;
-int utility[200];
-int assigned[gN];
-int numAssigned = 0;
-
-
 double coverage = 0.0;
 
 int main(int argc,char** argv){
@@ -59,6 +34,7 @@ int main(int argc,char** argv){
 
 	// Initialize Map
 	initMap(&matrix,gMax_X,gMax_Y);
+
 
 	// Pointer to nodes
 	struct node* ni;
@@ -75,17 +51,11 @@ int main(int argc,char** argv){
 	// Load Map with nodes
 	loadMap(&matrix,ni,gN);
 
-	// Obtain Frontiers
-	frontiersCount = getFrontiers(&matrix,frontiers,utility);
-	//printf("\nFrontierCount : %d",frontiersCount);
-
-	// Update the map with frontiers
-	updateFrontiers(&matrix, frontiers, frontiersCount);
-
 	// Display the initial Map with frontiers
-	//imshow("My Map",matrix);
+			
+	imshow("My Map",matrix);
 
-	//waitKey(0);
+	waitKey(0);
 
 	clock_t t1,t2;
 	// Start clock
@@ -94,8 +64,6 @@ int main(int argc,char** argv){
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
 
-			
-
 			// Iterate through the nodes
 		for(int i=0;i<gN;i++){
 
@@ -103,25 +71,11 @@ int main(int argc,char** argv){
 			// if the nodes has reached the destination (or came kinda close)
 			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 5){
 
-				// Find the frontier that offers maximum
-				//  value function
-				int frontierId = assignBestFrontier(&ni[i],frontiers,frontiersCount,
-						utility, assigned, numAssigned);
+				// Find the destination with highest utility value
+				//  and set it as destination for the node
+				setBestDestination(&ni[i],&matrix);
 
-				//printf("frontierId : %d\n",frontierId);
-
-				// Assign the frontier as destination to current node
-				if(numAssigned < gN){
-					assigned[numAssigned] = frontierId;
-					numAssigned++;
-				}
-				else
-					assigned[i] = frontierId;
-
-				// set the next destination of the node as the selected frontier's loca
-				ni[i].dstX = frontiers[frontierId].x;
-				ni[i].dstY = frontiers[frontierId].y;
-
+				// keep track of total distance travelled by node0
 				if(i==0)
 					gTotalDist += calcDist(ni[i].x,ni[i].y,ni[i].dstX,ni[i].dstY);
 
@@ -156,10 +110,8 @@ int main(int argc,char** argv){
 		 */
 
 		loadMap(&matrix,ni,gN);
-		frontiersCount = getFrontiers(&matrix,frontiers,utility);
-		updateFrontiers(&matrix, frontiers, frontiersCount);
 
-		//imshow("My Map",matrix);
+		imshow("My Map",matrix);
 
 		// Get Coverage and log it
 //		if( (int)gTime % 100 == 0){
