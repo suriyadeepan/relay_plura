@@ -1,5 +1,5 @@
 - [ ] New Approach for Exploration
-	- [ ] intensive observation of the code of new approach ( with printf statements )
+	- [x] intensive observation of the code of new approach ( with printf statements )
 	- [ ] test destination for different sources
 	- [ ] concrete "value" function
 	- [ ] find best destination for a given node
