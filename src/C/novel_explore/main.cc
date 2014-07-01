@@ -8,6 +8,9 @@
 #include "map.h"
 
 
+// global bw matrix
+Mat bwMat;
+
 double gTime = 0;
 
 	// Get necessary parameters from user 
@@ -15,7 +18,7 @@ double gTime = 0;
 double	gMax_X = 500;
 double	gMax_Y = 500;
 	//  #nodes
-const int	gN = 3;
+const int	gN = 5;
 	//	Run Time
 double	gRunTime = 100000;
 	//  Max Speed
@@ -26,7 +29,7 @@ double gT_int = 1;
 
 double gTotalDist;
 
-double coverage = 0.0;
+double gC = 0.0;
 
 int main(int argc,char** argv){
 
@@ -46,7 +49,7 @@ int main(int argc,char** argv){
 	 * Initialize Nodes
 	 */
 	for(int i=0;i<gN;i++)
-		nodeInit(&ni[i],i,1,15+(i*10));
+		nodeInit(&ni[i],i,1,40);
 
 	// Load Map with nodes
 	loadMap(&matrix,ni,gN);
@@ -69,10 +72,11 @@ int main(int argc,char** argv){
 
 
 			// if the nodes has reached the destination (or came kinda close)
-			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 5){
+			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 2){
 
 				// Find the destination with highest utility value
 				//  and set it as destination for the node
+				loadMap(&matrix,ni,gN);
 				setBestDestination(&ni[i],&matrix);
 
 				// keep track of total distance travelled by node0
@@ -88,6 +92,10 @@ int main(int argc,char** argv){
 			 *	 Keep Movin!
 			 */
 			else{
+
+				//setBestDestination(&ni[i],&matrix);
+				loadMap(&matrix,ni,gN);
+				imshow("bw",bwMat);
 
 				// Speed is constant
 				double offset = ni[i].x;
@@ -117,7 +125,7 @@ int main(int argc,char** argv){
 //		if( (int)gTime % 100 == 0){
 			//Snapshot of node locations @ time "gTime"
 			//snapshot(&ni[0],gTime);
-			coverage = getCoverage(&matrix) * 100;
+			gC = getCoverage(&matrix) * 100;
 			/*printf("\n%.0f %.4f",( (double)(clock() - t1)/ 1000000.0F ) * 1000
 					,coverage);*/ 
 //		}
@@ -132,10 +140,13 @@ int main(int argc,char** argv){
 
 			case 'p':
 				waitKey(0);
+
+			case 'c':
+				printf("\nCoverage : %.3f",gC);
 		}
 
 
-		if(coverage > 99.99)
+		if(gC > 99.7)
 			break;
 
 	 gTime += gT_int;

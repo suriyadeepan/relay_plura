@@ -46,6 +46,9 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
 	}// END OF FOR
 
+	cvtColor(*matrix,bwMat,CV_BGR2GRAY);
+	threshold(bwMat,bwMat,10,255,THRESH_BINARY);
+
 	return 0;
 
 }
@@ -60,7 +63,7 @@ void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
 	 */
 	for(int i=0; i<frontierCount; i++){
 
-		circle( frontierMap, frontiers[i], 2, Scalar(255,0,0), -1, 8, 0 );
+		circle( frontierMap, frontiers[i], 4, Scalar(255,0,0), -1, 8, 0 );
 
 	}
 
@@ -132,67 +135,105 @@ int getFrontiers(Mat *matrix, Point *frontiers,int *utility){
 
 }
 
+
+
+int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printStatus){
+
+	int util = 0;
+
+	if(printStatus == 1)
+		printf("\n-------------------------------\n");
+	// calculate utility
+	for(int i=0;i<(int)(D/d)-1;i++){
+
+		// print points along the line
+		int x = (int) ( d*(i+1)*cv )  + x0;
+		int y = (int) ( d*(i+1)*sv )  + y0;
+
+		if(printStatus == 1){
+
+			//if(i%2 == 0)
+				printf("(%d,%d) : %d \t",x,y,bwMat.at<unsigned char>(y,x));
+
+		}
+
+
+		if( (int)bwMat.at<unsigned char>(y,x)  == 0 )
+			util += 1;
+
+		/*else
+			util += -1;
+			*/
+
+	}
+
+	if(printStatus == 1)
+		printf("\n--- Util : %d\n",util);
+
+
+	return util;
+
+}
+
+
 void setBestDestination(struct node *n0,Mat *mat){
 
-	Mat bwMat;
-
-	cvtColor( (*mat), bwMat, CV_BGR2GRAY );
-	threshold(bwMat,bwMat,10,255,THRESH_BINARY);
-
-	//imshow("bw",bwMat);
-	//waitKey(0);
-
 	// set step
-	int d = 15;
+	int d = 25;
 
 	// D -> dist. b/w node and dest
 	double D = 0.0;
 
-	int maxUtil = 0;
+	int maxVal = -10000;
+	int x2,y2;
 
-	for(int a=0; a <= gMax_X; a+=25){
+	int x0 = (int)(n0->x);
+	int y0 = (int)(n0->y);
 
-		for(int b=0; b <= gMax_Y; b+=25){
+	double sv=0.0,cv=0.0;
 
-			double sv=0.0,cv=0.0;
+	for(int x1=0; x1 <= gMax_X; x1+=10){
+
+		for(int y1=0; y1 <= gMax_Y; y1+=10){
+
 
 			// get dist
-			D = calcDist(n0->x,n0->y,a,b);
+			D = calcDist(x0,y0,x1,y1);
 
 			// get sine, cosine values
-			calcSines(n0->x,n0->y,a,b,&sv,&cv);
+			calcSines(x0,y0,x1,y1,&sv,&cv);
 
-			int util=0;
+			//int value = calcUtil(D,d,sv,cv,n0->x,n0->y,mat) - (int)(D/50);
+			int value = calcUtil(D,d,sv,cv,x0,y0,0) - (int)(D/100);
+			//printf("(%d,%d) : (%d,%d) = %d\t",x0,y0,x1,y1,value);
+			
 
-			// calculate utility
-			for(int i=0;i<(int)(D/d);i++){
-
-				// print points along the line
-				int x = (int) ( d*(i+1)*cv )  + n0->x;
-				int y = (int) ( d*(i+1)*sv )  + n0->y;
-
-				if( (int)(bwMat.at<unsigned char>(x,y)/255) != 0)
-					util -= 10;
-
-				else
-					util += 1;
-
+			// get best value function
+			if(maxVal < value){
+				maxVal = value;
+				x2 = x1;
+				y2 = y1;
 			}
-
-//			dst.at<unsigned char>(a/25,b/25) = util*80;
-
-			if(maxUtil < util){
-				maxUtil = util;
-				n0->dstX = a/25;
-				n0->dstY = b/25;
-			}
-
+			
 		}
 
 	}
 
 
+/*	printf("\n\nNode %d => Best Value : (%d,%d) --> (%d,%d) : %d\n\n",n0->node_id,x0,
+			y0,x2,y2,maxVal); */
 
+	circle( *mat, Point(x2,y2), 2, Scalar(0,0,255), -1, 8, 0 );
+
+	// DEBUG : find the coordinates of the line that connects the best destination and
+	//  the source
+	/*if( gC > 30 ){
+		calcSines(x0,y0, x2, y2, &sv, &cv);
+		int newBestUtil = calcUtil(calcDist(x0,y0,x2,y2),d,sv,cv, x0, y0,1);
+	}*/
+
+	n0->dstX = x2;
+	n0->dstY = y2;
 }
 
 

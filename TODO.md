@@ -3,6 +3,6 @@
 	- [x] test destination for different sources
 	- [x] concrete "value" function
 	- [x] find best destination for a given node
-	- [ ] add this as function to map.cc
-	- [ ] Pause after determination of destination of each node
+	- [x] add this as function to map.cc
+	- [x] Pause after determination of destination of each node
 	- [ ] you missed a spot
