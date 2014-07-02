@@ -49,7 +49,7 @@ int calcUtil(double, int, double, double, int, int, int);
 /*
  * Find the destination  with highest utility
  */
-void setBestDestination(struct node *,Mat *mat);
+void setBestDestination(struct node *,Mat *mat,Point *, int);
 
 /*
  * Find the best possible frontier to explore for a particular node

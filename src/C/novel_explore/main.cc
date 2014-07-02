@@ -13,23 +13,36 @@ Mat bwMat;
 
 double gTime = 0;
 
-	// Get necessary parameters from user 
-	//  Map/Grid Dimensions
+// Get necessary parameters from user 
+//  Map/Grid Dimensions
 double	gMax_X = 500;
 double	gMax_Y = 500;
-	//  #nodes
+
+//  #nodes
 const int	gN = 5;
-	//	Run Time
+//	Run Time
 double	gRunTime = 100000;
-	//  Max Speed
+//  Max Speed
 double	gMax_Speed = 1;
 
-	// set time resolution
+// set time resolution
 double gT_int = 1;
 
 double gTotalDist;
 
 double gC = 0.0;
+
+
+/*
+ * Keep track of assigned nodes
+ *  add a factor ( distance to assigned nodes )
+ *   to the value function
+ *    makes the nodes spread 
+ */
+Point assigned[gN];
+int numAssigned = 0;
+
+
 
 int main(int argc,char** argv){
 
@@ -55,10 +68,10 @@ int main(int argc,char** argv){
 	loadMap(&matrix,ni,gN);
 
 	// Display the initial Map with frontiers
-			
-	imshow("My Map",matrix);
 
-	waitKey(0);
+	//imshow("My Map",matrix);
+
+	//waitKey(0);
 
 	clock_t t1,t2;
 	// Start clock
@@ -67,7 +80,7 @@ int main(int argc,char** argv){
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
 
-			// Iterate through the nodes
+		// Iterate through the nodes
 		for(int i=0;i<gN;i++){
 
 
@@ -77,14 +90,21 @@ int main(int argc,char** argv){
 				// Find the destination with highest utility value
 				//  and set it as destination for the node
 				loadMap(&matrix,ni,gN);
-				setBestDestination(&ni[i],&matrix);
+				setBestDestination(&ni[i],&matrix, assigned, numAssigned);
 
-				// keep track of total distance travelled by node0
-				if(i==0)
-					gTotalDist += calcDist(ni[i].x,ni[i].y,ni[i].dstX,ni[i].dstY);
+				if(numAssigned < gN){
+
+					assigned[numAssigned] = Point(ni[i].dstX, ni[i].dstY);
+					numAssigned++;
+
+				}
+				else
+					assigned[i] = Point(ni[i].dstX, ni[i].dstY);
+
 
 				// update the direction/angle (theta)
 				ni[i].theta = calcTheta( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY );
+
 
 			}
 
@@ -95,7 +115,7 @@ int main(int argc,char** argv){
 
 				//setBestDestination(&ni[i],&matrix);
 				loadMap(&matrix,ni,gN);
-				imshow("bw",bwMat);
+				//imshow("bw",bwMat);
 
 				// Speed is constant
 				double offset = ni[i].x;
@@ -104,6 +124,16 @@ int main(int argc,char** argv){
 
 				offset = ni[i].y;
 				ni[i].y = offset + ( gMax_Speed * 1 ) * sin(ni[i].theta * 22/ (7*180) ) ;
+
+				// keep track of total distance travelled by node0
+				if(i==0){
+						gTotalDist += gMax_Speed;
+						gC = getCoverage(&matrix) * 100;
+						printf("\n%.4f %.4f",gTotalDist, gC); 
+				}
+
+
+
 
 			}
 
@@ -122,15 +152,12 @@ int main(int argc,char** argv){
 		imshow("My Map",matrix);
 
 		// Get Coverage and log it
-//		if( (int)gTime % 100 == 0){
-			//Snapshot of node locations @ time "gTime"
-			//snapshot(&ni[0],gTime);
-			gC = getCoverage(&matrix) * 100;
-			/*printf("\n%.0f %.4f",( (double)(clock() - t1)/ 1000000.0F ) * 1000
-					,coverage);*/ 
-//		}
+		//		if( (int)gTime % 100 == 0){
+		//Snapshot of node locations @ time "gTime"
+		//snapshot(&ni[0],gTime);
+		//		}
 
-		char ch = waitKey(5);
+/*		char ch = waitKey(5);
 
 		switch(ch){
 
@@ -143,19 +170,19 @@ int main(int argc,char** argv){
 
 			case 'c':
 				printf("\nCoverage : %.3f",gC);
-		}
+		}*/
 
 
-		if(gC > 99.7)
+		if(gC > 99.99)
 			break;
 
-	 gTime += gT_int;
+		gTime += gT_int;
 
 	}// end of WHILE
 
-	
-	//waitKey(1);
-	printf("\n\n%.4f\n",gTotalDist);
+
+	waitKey(1);
+	//printf("\n\n%.4f\n",gTotalDist);
 
 	return 0;
 

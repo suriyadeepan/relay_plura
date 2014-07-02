@@ -56,7 +56,7 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
 
 	Mat frontierMap;
- 	(*matrix).copyTo(frontierMap);
+	(*matrix).copyTo(frontierMap);
 
 	/*
 	 * Update the map with frontiers
@@ -67,7 +67,7 @@ void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
 
 	}
 
-	imshow("Frontier Map",frontierMap);
+	//imshow("Frontier Map",frontierMap);
 
 }
 
@@ -119,16 +119,16 @@ int getFrontiers(Mat *matrix, Point *frontiers,int *utility){
 	int k=0;
 	// print all the pixel coordinates in the contours
 	for(size_t i=0; i<contours.size(); i++ ){
-		   // use contours[i] for the current contour
-			 for(size_t j=0; j<contours[i].size(); j++ ){
-			           // use contours[i][j] for current point
-								 if(j%20 == 0){
-									 //printf("\n%d %d",contours[i][j].x,contours[i][j].y);
-									 frontiers[k] = contours[i][j];
-									 utility[k] = 1;
-									 k++;
-								 }
-			 }
+		// use contours[i] for the current contour
+		for(size_t j=0; j<contours[i].size(); j++ ){
+			// use contours[i][j] for current point
+			if(j%20 == 0){
+				//printf("\n%d %d",contours[i][j].x,contours[i][j].y);
+				frontiers[k] = contours[i][j];
+				utility[k] = 1;
+				k++;
+			}
+		}
 	}
 
 	return k;
@@ -153,7 +153,7 @@ int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printSta
 		if(printStatus == 1){
 
 			//if(i%2 == 0)
-				printf("(%d,%d) : %d \t",x,y,bwMat.at<unsigned char>(y,x));
+			printf("(%d,%d) : %d \t",x,y,bwMat.at<unsigned char>(y,x));
 
 		}
 
@@ -176,7 +176,7 @@ int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printSta
 }
 
 
-void setBestDestination(struct node *n0,Mat *mat){
+void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssigned){
 
 	// set step
 	int d = 25;
@@ -192,9 +192,9 @@ void setBestDestination(struct node *n0,Mat *mat){
 
 	double sv=0.0,cv=0.0;
 
-	for(int x1=0; x1 <= gMax_X; x1+=10){
+	for(int x1=0; x1 <= gMax_X; x1+=1){
 
-		for(int y1=0; y1 <= gMax_Y; y1+=10){
+		for(int y1=0; y1 <= gMax_Y; y1+=1){
 
 
 			// get dist
@@ -204,23 +204,40 @@ void setBestDestination(struct node *n0,Mat *mat){
 			calcSines(x0,y0,x1,y1,&sv,&cv);
 
 			//int value = calcUtil(D,d,sv,cv,n0->x,n0->y,mat) - (int)(D/50);
-			int value = calcUtil(D,d,sv,cv,x0,y0,0) - (int)(D/100);
+			int util = calcUtil(D,d,sv,cv,x0,y0,0);
+			int value = util - (int)(D/100);
 			//printf("(%d,%d) : (%d,%d) = %d\t",x0,y0,x1,y1,value);
-			
+
+
+			/*
+			 * Add a factor of distance to the assigned nodes
+			 */
+			for(int k=0; k < numAssigned; k++){
+
+				int distToAssigned = calcDist(x1,y1, assigned[k].x,assigned[k].y);
+
+				if( distToAssigned < 100 )
+					value -= ( 1 - (distToAssigned/100) );
+
+			}
+
 
 			// get best value function
-			if(maxVal < value){
-				maxVal = value;
-				x2 = x1;
-				y2 = y1;
-			}
 			
+			if(util > 0){	
+				if(maxVal < value){
+					maxVal = value;
+					x2 = x1;
+					y2 = y1;
+				}
+			}
+
 		}
 
 	}
 
 
-/*	printf("\n\nNode %d => Best Value : (%d,%d) --> (%d,%d) : %d\n\n",n0->node_id,x0,
+	/*	printf("\n\nNode %d => Best Value : (%d,%d) --> (%d,%d) : %d\n\n",n0->node_id,x0,
 			y0,x2,y2,maxVal); */
 
 	circle( *mat, Point(x2,y2), 2, Scalar(0,0,255), -1, 8, 0 );
@@ -230,7 +247,7 @@ void setBestDestination(struct node *n0,Mat *mat){
 	/*if( gC > 30 ){
 		calcSines(x0,y0, x2, y2, &sv, &cv);
 		int newBestUtil = calcUtil(calcDist(x0,y0,x2,y2),d,sv,cv, x0, y0,1);
-	}*/
+		}*/
 
 	n0->dstX = x2;
 	n0->dstY = y2;
@@ -246,7 +263,7 @@ void setBestDestination(struct node *n0,Mat *mat){
  * Assign it to the node
  */
 int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int *utility,
-	 	int *assigned, int numAssigned){
+		int *assigned, int numAssigned){
 
 	int frontierId = 0;
 	int maxVal = -10000;
@@ -265,7 +282,7 @@ int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int 
 			// calculated distance between frontier[i] and (assigned) frontier[ assigned[j] ]
 			int dist = calcDist(frontiers[i].x,frontiers[i].y,frontiers[assigned[j]].x,
 					frontiers[assigned[j]].y);
-		
+
 			// set utility
 			if( dist < 100)
 				utility[i] -= ( 1 - (dist/100) ); 
@@ -298,7 +315,7 @@ int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int 
 
 	// update assigned[] and numAssigned
 	/*assigned[numAssigned] = frontierId;
-	numAssigned++;*/
+		numAssigned++;*/
 
 	return frontierId;
 

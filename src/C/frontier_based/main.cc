@@ -15,7 +15,7 @@ double gTime = 0;
 double	gMax_X = 500;
 double	gMax_Y = 500;
 	//  #nodes
-const int	gN = 3;
+const int	gN = 5;
 	//	Run Time
 double	gRunTime = 100000;
 	//  Max Speed
@@ -70,7 +70,7 @@ int main(int argc,char** argv){
 	 * Initialize Nodes
 	 */
 	for(int i=0;i<gN;i++)
-		nodeInit(&ni[i],i,1,15+(i*10));
+		nodeInit(&ni[i],i,1,40);
 
 	// Load Map with nodes
 	loadMap(&matrix,ni,gN);
@@ -121,10 +121,6 @@ int main(int argc,char** argv){
 				// set the next destination of the node as the selected frontier's loca
 				ni[i].dstX = frontiers[frontierId].x;
 				ni[i].dstY = frontiers[frontierId].y;
-
-				if(i==0)
-					gTotalDist += calcDist(ni[i].x,ni[i].y,ni[i].dstX,ni[i].dstY);
-
 				// update the direction/angle (theta)
 				ni[i].theta = calcTheta( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY );
 
@@ -142,6 +138,14 @@ int main(int argc,char** argv){
 
 				offset = ni[i].y;
 				ni[i].y = offset + ( gMax_Speed * 1 ) * sin(ni[i].theta * 22/ (7*180) ) ;
+
+				if(i==0)
+					gTotalDist += gMax_Speed;
+
+
+					coverage = getCoverage(&matrix) * 100;
+					printf("\n%.0f %.4f", gTotalDist, coverage); 
+
 
 			}
 
@@ -165,14 +169,11 @@ int main(int argc,char** argv){
 //		if( (int)gTime % 100 == 0){
 			//Snapshot of node locations @ time "gTime"
 			//snapshot(&ni[0],gTime);
-			coverage = getCoverage(&matrix) * 100;
-			/*printf("\n%.0f %.4f",( (double)(clock() - t1)/ 1000000.0F ) * 1000
-					,coverage);*/ 
 //		}
 
-		char ch = waitKey(5);
+		//char ch = waitKey(5);
 
-		switch(ch){
+		/*switch(ch){
 
 			case 'q':
 				printf("\n\n**** FORCE QUIT by User ****\n");
@@ -180,10 +181,10 @@ int main(int argc,char** argv){
 
 			case 'p':
 				waitKey(0);
-		}
+		}*/
 
 
-		if(coverage > 99.99)
+		if(coverage > 99.5)
 			break;
 
 	 gTime += gT_int;

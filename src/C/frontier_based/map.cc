@@ -66,7 +66,7 @@ void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
 
 	}
 
-	imshow("Frontier Map",frontierMap);
+	//imshow("Frontier Map",frontierMap);
 
 }
 
