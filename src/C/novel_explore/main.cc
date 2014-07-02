@@ -19,7 +19,7 @@ double	gMax_X = 500;
 double	gMax_Y = 500;
 
 //  #nodes
-const int	gN = 5;
+const int	gN = 3;
 //	Run Time
 double	gRunTime = 100000;
 //  Max Speed
@@ -69,9 +69,9 @@ int main(int argc,char** argv){
 
 	// Display the initial Map with frontiers
 
-	//imshow("My Map",matrix);
+	imshow("My Map",matrix);
 
-	//waitKey(0);
+	waitKey(0);
 
 	clock_t t1,t2;
 	// Start clock
@@ -115,7 +115,7 @@ int main(int argc,char** argv){
 
 				//setBestDestination(&ni[i],&matrix);
 				loadMap(&matrix,ni,gN);
-				//imshow("bw",bwMat);
+				imshow("bw",bwMat);
 
 				// Speed is constant
 				double offset = ni[i].x;
@@ -157,7 +157,7 @@ int main(int argc,char** argv){
 		//snapshot(&ni[0],gTime);
 		//		}
 
-/*		char ch = waitKey(5);
+		char ch = waitKey(5);
 
 		switch(ch){
 
@@ -170,10 +170,10 @@ int main(int argc,char** argv){
 
 			case 'c':
 				printf("\nCoverage : %.3f",gC);
-		}*/
+		}
 
 
-		if(gC > 99.99)
+		if(gC > 99.9)
 			break;
 
 		gTime += gT_int;
@@ -181,7 +181,7 @@ int main(int argc,char** argv){
 	}// end of WHILE
 
 
-	waitKey(1);
+	//waitKey(1);
 	//printf("\n\n%.4f\n",gTotalDist);
 
 	return 0;

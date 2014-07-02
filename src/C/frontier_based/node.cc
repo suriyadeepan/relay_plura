@@ -15,8 +15,12 @@ int nodeInit (struct node* n0, int node_id, int type,int pl){
 	 */
 	//srand((int)time(NULL) + node_id);
 	srand( clock() );
-	n0->x = ( (double)rand()/(double)RAND_MAX ) * gMax_X;
-	n0->y = ( (double)rand()/(double)RAND_MAX ) * gMax_Y;
+	//n0->x = ( (double)rand()/(double)RAND_MAX ) * gMax_X;
+	//n0->y = ( (double)rand()/(double)RAND_MAX ) * gMax_Y;
+	
+	n0->x = gMax_X/2;
+	n0->y = gMax_Y/2;
+
 
 	n0->run_time = 0.0;
 	n0->rest_time = 0.0;

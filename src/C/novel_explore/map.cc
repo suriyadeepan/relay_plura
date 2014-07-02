@@ -216,8 +216,8 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 
 				int distToAssigned = calcDist(x1,y1, assigned[k].x,assigned[k].y);
 
-				if( distToAssigned < 100 )
-					value -= ( 1 - (distToAssigned/100) );
+				if( distToAssigned < 200 )
+					value -= ( 1 - (distToAssigned/20) );
 
 			}
 

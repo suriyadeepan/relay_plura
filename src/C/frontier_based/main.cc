@@ -15,7 +15,7 @@ double gTime = 0;
 double	gMax_X = 500;
 double	gMax_Y = 500;
 	//  #nodes
-const int	gN = 5;
+const int	gN = 3;
 	//	Run Time
 double	gRunTime = 100000;
 	//  Max Speed
@@ -83,9 +83,9 @@ int main(int argc,char** argv){
 	updateFrontiers(&matrix, frontiers, frontiersCount);
 
 	// Display the initial Map with frontiers
-	//imshow("My Map",matrix);
+	imshow("My Map",matrix);
 
-	//waitKey(0);
+	waitKey(0);
 
 	clock_t t1,t2;
 	// Start clock
@@ -163,7 +163,7 @@ int main(int argc,char** argv){
 		frontiersCount = getFrontiers(&matrix,frontiers,utility);
 		updateFrontiers(&matrix, frontiers, frontiersCount);
 
-		//imshow("My Map",matrix);
+		imshow("My Map",matrix);
 
 		// Get Coverage and log it
 //		if( (int)gTime % 100 == 0){
@@ -171,9 +171,9 @@ int main(int argc,char** argv){
 			//snapshot(&ni[0],gTime);
 //		}
 
-		//char ch = waitKey(5);
+		char ch = waitKey(5);
 
-		/*switch(ch){
+		switch(ch){
 
 			case 'q':
 				printf("\n\n**** FORCE QUIT by User ****\n");
@@ -181,7 +181,7 @@ int main(int argc,char** argv){
 
 			case 'p':
 				waitKey(0);
-		}*/
+		}
 
 
 		if(coverage > 99.5)
