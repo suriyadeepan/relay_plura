@@ -1,8 +1,8 @@
-- [ ] New Approach for Exploration
+- [x] New Approach for Exploration
 	- [x] intensive observation of the code of new approach ( with printf statements )
 	- [x] test destination for different sources
 	- [x] concrete "value" function
 	- [x] find best destination for a given node
 	- [x] add this as function to map.cc
 	- [x] Pause after determination of destination of each node
-	- [ ] you missed a spot
+	- [x] you missed a spot
