@@ -1,0 +1,11 @@
+#!/usr/bin/gnuplot
+reset
+#set terminal png
+#set output "plot.png"
+set ylabel "Coverage"
+set xlabel "Time"
+set grid
+
+plot filename using 1:2 with lines title filename
+
+pause 8

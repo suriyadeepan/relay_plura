@@ -6,7 +6,7 @@
 	This repository is a collection of projects in Wireless Sensor Network involving 
 		1] tinyos based mobile nodes, static nodes and base station firmware 
 		2] C based Simulation Framework of mobility models that generates Cooja compatible positions.dat plot 
-		3] Example programs in C to test mobility, coverage and connectivity.
+		3] Example programs in C to test mobility, *coverage* and connectivity.
 
 
 ## Simulation ##
