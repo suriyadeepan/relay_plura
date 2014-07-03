@@ -15,7 +15,7 @@ double gTime = 0;
 double	gMax_X = 500;
 double	gMax_Y = 500;
 	//  #nodes
-const int	gN = 3;
+const int	gN = 5;
 	//	Run Time
 double	gRunTime = 100000;
 	//  Max Speed

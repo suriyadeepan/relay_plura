@@ -204,8 +204,12 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 			calcSines(x0,y0,x1,y1,&sv,&cv);
 
 			//int value = calcUtil(D,d,sv,cv,n0->x,n0->y,mat) - (int)(D/50);
-			int util = calcUtil(D,d,sv,cv,x0,y0,0);
-			int value = util - (int)(D/100);
+			int util = 0;
+			
+			for(int i=-10;i<=10;i+=5)
+				util += calcUtil(D,d,sv,cv,x0,y0+i,0);
+
+			int value = util - (int)(D/10);
 			//printf("(%d,%d) : (%d,%d) = %d\t",x0,y0,x1,y1,value);
 
 
@@ -217,7 +221,7 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 				int distToAssigned = calcDist(x1,y1, assigned[k].x,assigned[k].y);
 
 				if( distToAssigned < 200 )
-					value -= ( 1 - (distToAssigned/20) );
+					value -= ( 1 - (distToAssigned/1) );
 
 			}
 
