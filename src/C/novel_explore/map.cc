@@ -140,9 +140,11 @@ int getFrontiers(Mat *matrix, Point *frontiers,int *utility){
 int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printStatus){
 
 	int util = 0;
+//	int wPix = 0;
 
-	if(printStatus == 1)
+/*	if(printStatus == 1)
 		printf("\n-------------------------------\n");
+		*/
 	// calculate utility
 	for(int i=0;i<(int)(D/d)-1;i++){
 
@@ -150,28 +152,24 @@ int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printSta
 		int x = (int) ( d*(i+1)*cv )  + x0;
 		int y = (int) ( d*(i+1)*sv )  + y0;
 
-		if(printStatus == 1){
 
-			//if(i%2 == 0)
-			printf("(%d,%d) : %d \t",x,y,bwMat.at<unsigned char>(y,x));
-
-		}
-
+		//printf("(%d,%d) : %d \t",x,y,bwMat.at<unsigned char>(y,x));
 
 		if( (int)bwMat.at<unsigned char>(y,x)  == 0 )
 			util += 1;
 
 		/*else
-			util += -1;
+			wPix++;
 			*/
 
 	}
 
-	if(printStatus == 1)
+/*	if(printStatus == 1)
 		printf("\n--- Util : %d\n",util);
+		*/
 
-
-	return util;
+	
+		return util;
 
 }
 
@@ -179,7 +177,7 @@ int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printSta
 void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssigned){
 
 	// set step
-	int d = 25;
+	int d = 10;
 
 	// D -> dist. b/w node and dest
 	double D = 0.0;
@@ -221,7 +219,7 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 				int distToAssigned = calcDist(x1,y1, assigned[k].x,assigned[k].y);
 
 				if( distToAssigned < 200 )
-					value -= ( 1 - (distToAssigned/1) );
+					value -= ( 1 - (distToAssigned/300) );
 
 			}
 

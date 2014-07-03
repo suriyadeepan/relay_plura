@@ -19,7 +19,7 @@ double	gMax_X = 500;
 double	gMax_Y = 500;
 
 //  #nodes
-const int	gN = 6;
+const int	gN = 4;
 //	Run Time
 double	gRunTime = 100000;
 //  Max Speed
@@ -85,7 +85,7 @@ int main(int argc,char** argv){
 
 
 			// if the nodes has reached the destination (or came kinda close)
-			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 2){
+			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 30){
 
 				// Find the destination with highest utility value
 				//  and set it as destination for the node
@@ -181,7 +181,7 @@ int main(int argc,char** argv){
 	}// end of WHILE
 
 
-	//waitKey(1);
+	waitKey(1);
 	//printf("\n\n%.4f\n",gTotalDist);
 
 	return 0;
