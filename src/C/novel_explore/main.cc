@@ -85,7 +85,7 @@ int main(int argc,char** argv){
 
 
 			// if the nodes has reached the destination (or came kinda close)
-			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 30){
+			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 20){
 
 				// Find the destination with highest utility value
 				//  and set it as destination for the node
@@ -173,7 +173,7 @@ int main(int argc,char** argv){
 		}
 
 
-		if(gC > 99.9)
+		if(gC > 99.7)
 			break;
 
 		gTime += gT_int;

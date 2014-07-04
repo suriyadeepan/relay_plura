@@ -135,6 +135,27 @@ int getFrontiers(Mat *matrix, Point *frontiers,int *utility){
 
 }
 
+void addGrayToPath(double D, int d, double sv, double cv, int x0, int y0){
+
+	/*
+	d = d/5;
+
+	// calculate utility
+	for(int i=0;i<(int)(D/d)-1;i++){
+
+		// print points along the line
+		int x = (int) ( d*(i+1)*cv )  + x0;
+		int y = (int) ( d*(i+1)*sv )  + y0;
+
+		// set gray
+		bwMat.at<unsigned char>(y,x)  = 255;
+
+	}*/
+
+
+}
+
+
 
 
 int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printStatus){
@@ -142,9 +163,9 @@ int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printSta
 	int util = 0;
 //	int wPix = 0;
 
-/*	if(printStatus == 1)
-		printf("\n-------------------------------\n");
-		*/
+//	if(printStatus == 1)
+		//printf("\n-------------------------------\n");
+		//
 	// calculate utility
 	for(int i=0;i<(int)(D/d)-1;i++){
 
@@ -164,9 +185,9 @@ int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printSta
 
 	}
 
-/*	if(printStatus == 1)
-		printf("\n--- Util : %d\n",util);
-		*/
+/*	if(printStatus == 1)*/
+		//printf("\n--- Util : %d\n",util);
+		
 
 	
 		return util;
@@ -226,13 +247,13 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 
 			// get best value function
 			
-			if(util > 0){	
+			//if(util > 0){	
 				if(maxVal < value){
 					maxVal = value;
 					x2 = x1;
 					y2 = y1;
 				}
-			}
+			//}
 
 		}
 
@@ -253,6 +274,17 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 
 	n0->dstX = x2;
 	n0->dstY = y2;
+
+	// Add gray to path
+	/*
+	for(int i=-15;i<=15;i+=5)
+		addGrayToPath(calcDist(x0,y0,x2,y2),d,sv,cv,x0,y0);
+		*/
+
+	line( *mat, Point(x0,y0), Point(x2,y2) ,Scalar(210,210,210), 20, 8, 0 );
+
+	circle( *mat, Point(x2,y2), 2, Scalar(0,0,255), -1, 8, 0 );
+
 }
 
 

@@ -47,6 +47,11 @@ void updateFrontiers(Mat *, Point *, int);
 int calcUtil(double, int, double, double, int, int, int);
 
 /*
+ * Add gray color to the path to be travelled
+ */
+void addGrayToPath(double D, int d, double sv, double cv, int x0, int y0);
+
+/*
  * Find the destination  with highest utility
  */
 void setBestDestination(struct node *,Mat *mat,Point *, int);
