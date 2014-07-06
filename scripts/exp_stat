@@ -1,0 +1,14 @@
+#!/bin/bash
+i=$1
+
+while [ $i -le 10 ]
+do
+	echo fb $i 
+	../bin/fb $i > ../graphs/fb$i.dat
+	#../bin/fbr $i > ../graphs/fbr$i.dat
+	echo ne $i 
+	../bin/ne $i > ../graphs/ne$i.dat
+	#../bin/ner $i > ../graphs/ner$i.dat
+	i=$[$i+1]
+done
+

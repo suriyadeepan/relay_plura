@@ -15,7 +15,7 @@ double gTime = 0;
 double	gMax_X = 500;
 double	gMax_Y = 500;
 	//  #nodes
-const int	gN = 5;
+int	gN ;
 	//	Run Time
 double	gRunTime = 100000;
 	//  Max Speed
@@ -24,7 +24,7 @@ double	gMax_Speed = 1;
 	// set time resolution
 double gT_int = 1;
 
-double gTotalDist;
+double gTotalDist = 0.0;
 
 /* 
  * Frontiers 
@@ -47,13 +47,15 @@ double gTotalDist;
 Point frontiers[200];
 int frontiersCount = 0;
 int utility[200];
-int assigned[gN];
+int assigned[10];
 int numAssigned = 0;
 
 
 double coverage = 0.0;
 
 int main(int argc,char** argv){
+
+	gN = atoi(argv[1]);
 
 	Mat matrix;
 
@@ -83,14 +85,15 @@ int main(int argc,char** argv){
 	updateFrontiers(&matrix, frontiers, frontiersCount);
 
 	// Display the initial Map with frontiers
-	imshow("My Map",matrix);
+	//imshow("My Map",matrix);
 
-	waitKey(0);
+	//waitKey(0);
 
 	clock_t t1,t2;
 	// Start clock
 	t1 = clock();
 
+	printf("\n%.0f %.4f", gTotalDist, getCoverage(&matrix)*100 ); 
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
 
@@ -142,7 +145,6 @@ int main(int argc,char** argv){
 				if(i==0)
 					gTotalDist += gMax_Speed;
 
-
 					coverage = getCoverage(&matrix) * 100;
 					printf("\n%.0f %.4f", gTotalDist, coverage); 
 
@@ -163,7 +165,7 @@ int main(int argc,char** argv){
 		frontiersCount = getFrontiers(&matrix,frontiers,utility);
 		updateFrontiers(&matrix, frontiers, frontiersCount);
 
-		imshow("My Map",matrix);
+		//imshow("My Map",matrix);
 
 		// Get Coverage and log it
 //		if( (int)gTime % 100 == 0){
@@ -171,7 +173,7 @@ int main(int argc,char** argv){
 			//snapshot(&ni[0],gTime);
 //		}
 
-		char ch = waitKey(5);
+		/*char ch = waitKey(5);
 
 		switch(ch){
 
@@ -181,7 +183,7 @@ int main(int argc,char** argv){
 
 			case 'p':
 				waitKey(0);
-		}
+		}*/
 
 
 		if(coverage > 99.5)

@@ -19,7 +19,7 @@ double	gMax_X = 500;
 double	gMax_Y = 500;
 
 //  #nodes
-const int	gN = 4;
+int	gN;
 //	Run Time
 double	gRunTime = 100000;
 //  Max Speed
@@ -28,9 +28,12 @@ double	gMax_Speed = 1;
 // set time resolution
 double gT_int = 1;
 
-double gTotalDist;
+double gTotalDist = 0.0;
 
 double gC = 0.0;
+
+// set points for drawing gray lines
+Point line_src, line_dst;
 
 
 /*
@@ -39,7 +42,7 @@ double gC = 0.0;
  *   to the value function
  *    makes the nodes spread 
  */
-Point assigned[gN];
+Point assigned[10];
 int numAssigned = 0;
 
 
@@ -47,6 +50,8 @@ int numAssigned = 0;
 int main(int argc,char** argv){
 
 	Mat matrix;
+
+	gN = atoi(argv[1]);
 
 	// Initialize Map
 	initMap(&matrix,gMax_X,gMax_Y);
@@ -67,25 +72,27 @@ int main(int argc,char** argv){
 	// Load Map with nodes
 	loadMap(&matrix,ni,gN);
 
-	// Display the initial Map with frontiers
+	// Display the initial Map 
+	//imshow("My Map",matrix);
 
-	imshow("My Map",matrix);
-
-	waitKey(0);
+	//waitKey(0);
 
 	clock_t t1,t2;
 	// Start clock
 	t1 = clock();
 
+	printf("\n%.4f %.4f",gTotalDist, getCoverage(&matrix)*100); 
+
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
+
 
 		// Iterate through the nodes
 		for(int i=0;i<gN;i++){
 
 
 			// if the nodes has reached the destination (or came kinda close)
-			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 20){
+			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 10){
 
 				// Find the destination with highest utility value
 				//  and set it as destination for the node
@@ -115,7 +122,7 @@ int main(int argc,char** argv){
 
 				//setBestDestination(&ni[i],&matrix);
 				loadMap(&matrix,ni,gN);
-				imshow("bw",bwMat);
+				//imshow("bw",bwMat);
 
 				// Speed is constant
 				double offset = ni[i].x;
@@ -131,9 +138,6 @@ int main(int argc,char** argv){
 						gC = getCoverage(&matrix) * 100;
 						printf("\n%.4f %.4f",gTotalDist, gC); 
 				}
-
-
-
 
 			}
 
@@ -173,7 +177,7 @@ int main(int argc,char** argv){
 		}
 
 
-		if(gC > 99.7)
+		if(gC > 97)
 			break;
 
 		gTime += gT_int;
@@ -181,7 +185,7 @@ int main(int argc,char** argv){
 	}// end of WHILE
 
 
-	waitKey(1);
+	//waitKey(1);
 	//printf("\n\n%.4f\n",gTotalDist);
 
 	return 0;

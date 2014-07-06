@@ -1,11 +1,9 @@
-#!/usr/bin/bash
-gnuplot -e "filename='fb_cov.dat'" foo.plg
-ipfile=$1
-reset
-set terminal png
-set output "plot.png"
-set ylabel "Coverage"
-set xlabel "Time" 
-set grid 
-
-plot "fb_cov.dat" using 1:2 with lines title 'Frontier Approach' 
+#!/bin/bash
+i=3
+while  [ $i -le 10 ]
+do
+	var1="'$i'"
+	var2="'../graphs/fb0$i.dat'"
+	gnuplot -e "i=$var1" -e "filename1=$var2" -e "filename=../graphs/ne0$i.dat" foo.plg
+	i=$[$i+1]
+done

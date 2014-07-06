@@ -47,7 +47,7 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 	}// END OF FOR
 
 	cvtColor(*matrix,bwMat,CV_BGR2GRAY);
-	threshold(bwMat,bwMat,10,255,THRESH_BINARY);
+	threshold(bwMat,bwMat,0,255,THRESH_BINARY);
 
 	return 0;
 
@@ -86,7 +86,7 @@ double getCoverage(Mat* matrix ){
 	 */
 	Mat dst;
 	cvtColor(*matrix,dst,CV_BGR2GRAY,0);
-	threshold(dst,dst,10,255,THRESH_BINARY);
+	threshold(dst,dst,250,255,THRESH_BINARY);
 
 	double coverage = (double)( countNonZero(dst)/(gMax_X*gMax_Y) );
 
@@ -135,28 +135,6 @@ int getFrontiers(Mat *matrix, Point *frontiers,int *utility){
 
 }
 
-void addGrayToPath(double D, int d, double sv, double cv, int x0, int y0){
-
-	/*
-	d = d/5;
-
-	// calculate utility
-	for(int i=0;i<(int)(D/d)-1;i++){
-
-		// print points along the line
-		int x = (int) ( d*(i+1)*cv )  + x0;
-		int y = (int) ( d*(i+1)*sv )  + y0;
-
-		// set gray
-		bwMat.at<unsigned char>(y,x)  = 255;
-
-	}*/
-
-
-}
-
-
-
 
 int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printStatus){
 
@@ -196,6 +174,11 @@ int calcUtil(double D, int d, double sv, double cv, int x0, int y0, int printSta
 
 
 void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssigned){
+
+
+	line( bwMat, line_src, line_dst, Scalar(255,255,255), 20, 8, 0 );
+	imshow("bw",bwMat);
+
 
 	// set step
 	int d = 10;
@@ -239,7 +222,7 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 
 				int distToAssigned = calcDist(x1,y1, assigned[k].x,assigned[k].y);
 
-				if( distToAssigned < 200 )
+				if( distToAssigned < 300 )
 					value -= ( 1 - (distToAssigned/300) );
 
 			}
@@ -263,7 +246,7 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 	/*	printf("\n\nNode %d => Best Value : (%d,%d) --> (%d,%d) : %d\n\n",n0->node_id,x0,
 			y0,x2,y2,maxVal); */
 
-	circle( *mat, Point(x2,y2), 2, Scalar(0,0,255), -1, 8, 0 );
+	circle( *mat, Point(x2,y2), 6, Scalar(0,0,255), -1, 8, 0 );
 
 	// DEBUG : find the coordinates of the line that connects the best destination and
 	//  the source
@@ -276,14 +259,11 @@ void setBestDestination(struct node *n0,Mat *mat, Point *assigned, int numAssign
 	n0->dstY = y2;
 
 	// Add gray to path
-	/*
-	for(int i=-15;i<=15;i+=5)
-		addGrayToPath(calcDist(x0,y0,x2,y2),d,sv,cv,x0,y0);
-		*/
+//	line( *mat, Point(x0,y0), Point(x2,y2) ,Scalar(210,210,210), 20, 8, 0 );
 
-	line( *mat, Point(x0,y0), Point(x2,y2) ,Scalar(210,210,210), 20, 8, 0 );
-
-	circle( *mat, Point(x2,y2), 2, Scalar(0,0,255), -1, 8, 0 );
+	line_src = Point(x0,y0);
+	line_dst = Point(x2,y2);
+	
 
 }
 

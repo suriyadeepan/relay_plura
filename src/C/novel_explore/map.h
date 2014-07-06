@@ -90,6 +90,8 @@ void destroyMap (Mat *);
 /* Global matrix */
 extern Mat bwMat;
 extern double gC;
+extern Point line_src;
+extern Point line_dst;
 
 #endif
 
