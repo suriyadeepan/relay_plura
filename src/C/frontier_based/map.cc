@@ -42,7 +42,13 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 
 
 		circle( *matrix, Point(x,y), (int)*(&n0[i].pl), Scalar(255,255,255), -1, 8, 0 );
-		circle( *matrix, Point(x,y), 6, Scalar(0,255,0), -1, 8, 0 );
+
+		if( (int)*(&n0[i].type) == 1 )
+			circle( *matrix, Point(x,y), (int)*(&n0[i].pl)/8 , Scalar(0,255,0), -1, 8, 0 );
+
+		else
+			circle( *matrix, Point(x,y), (int)*(&n0[i].pl)/8 , Scalar(0,0,255), -1, 8, 0 );
+
 
 	}// END OF FOR
 
@@ -66,7 +72,7 @@ void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
 
 	}
 
-	//imshow("Frontier Map",frontierMap);
+	imshow("Frontier Map",frontierMap);
 
 }
 
@@ -86,6 +92,8 @@ double getCoverage(Mat* matrix ){
 	Mat dst;
 	cvtColor(*matrix,dst,CV_BGR2GRAY,0);
 	threshold(dst,dst,10,255,THRESH_BINARY);
+
+	imshow("Cov",dst);
 
 	double coverage = (double)( countNonZero(dst)/(gMax_X*gMax_Y) );
 
@@ -200,7 +208,57 @@ int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int 
 
 }
 
+/* Activate Cluster */
+void activateCluster(struct node* n0){
 
+	// check distance to all cluster nodes
+	// C1 check
+	bool flag = false;
+
+	if(c1[0].pl == 0){
+		
+		flag = true;
+	for(int i=0; i<3; i++)
+		if(calcDist(n0->x,n0->y,c1[i].x,c1[i].y) < n0->pl){
+			
+			for(int j=0;j<3;j++)
+				c1[j].pl = 40;
+			break;
+
+		}
+	}
+
+	if(c2[0].pl == 0){
+
+		flag = true;
+	for(int i=0; i<3; i++)
+		if(calcDist(n0->x,n0->y,c2[i].x,c2[i].y) < n0->pl){
+			
+			for(int j=0;j<3;j++)
+				c2[j].pl = 40;
+			break;
+
+		}
+	}
+
+	if(c3[0].pl == 0){
+
+		flag = true;
+	for(int i=0; i<3; i++)
+		if(calcDist(n0->x,n0->y,c3[i].x,c3[i].y) < n0->pl){
+			
+			for(int j=0;j<3;j++)
+				c3[j].pl = 40;
+			break;
+
+		}
+	}
+
+/*	if(flag == false)
+		waitKey(0);
+		*/
+
+}
 
 
 

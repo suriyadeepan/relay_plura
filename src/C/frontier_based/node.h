@@ -57,7 +57,7 @@ struct node{
 // Constructors
 
 int nodeInit (struct node* ,int, int,int);
-int nodeLocalizedInit (struct node*,int,double,double);
+int nodeLocalizedInit (struct node*,int,double,double,int,int);
 
 // General Utility Functions
 
@@ -107,5 +107,8 @@ extern int gN;
 extern double gRunTime;
 
 extern double gT_int;
+
+// Clusters
+extern struct node *c1,*c2,*c3;
 
 #endif

@@ -49,6 +49,9 @@ void updateFrontiers(Mat *, Point *, int);
  */
 int assignBestFrontier(struct node *, Point *, int, int *, int *, int);
 
+/* Find distance bw mobile and static nodes and
+ *  activate clusters*/
+void activateCluster( struct node *);
 
 /*
  * Update the pixel values based on node locations

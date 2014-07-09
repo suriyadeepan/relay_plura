@@ -39,7 +39,7 @@ int nodeInit (struct node* n0, int node_id, int type,int pl){
 	return 0;
 }
 
-int nodeLocalizedInit (struct node* n0, int node_id, double x, double y){
+int nodeLocalizedInit (struct node* n0, int node_id, double x, double y, int type, int pl){
 
 	n0->node_id = node_id;
 	n0->x = x;
@@ -51,6 +51,12 @@ int nodeLocalizedInit (struct node* n0, int node_id, double x, double y){
 
 	n0->dstX = x;
 	n0->dstY = y;
+
+	// set type
+	n0->type = type;
+
+	// set powerlevel
+	n0->pl = pl;
 
 	return 0;
 

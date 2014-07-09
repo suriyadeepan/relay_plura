@@ -53,6 +53,20 @@ int numAssigned = 0;
 
 double coverage = 0.0;
 
+/*  Clusters **/
+// Pointers to clusters 
+struct node *c1,*c2,*c3;
+
+void CallBackFunc(int event, int x, int y, int flags, void* userdata)
+{
+    if  ( event == EVENT_LBUTTONDOWN )
+    {
+			printf("\n(%d,%d)",x,y);
+    }
+}
+
+
+
 int main(int argc,char** argv){
 
 	gN = atoi(argv[1]);
@@ -62,20 +76,39 @@ int main(int argc,char** argv){
 	// Initialize Map
 	initMap(&matrix,gMax_X,gMax_Y);
 
-	// Pointer to nodes
+	c1 = (struct node *)malloc(sizeof(struct node)*3);
+	c2 = (struct node *)malloc(sizeof(struct node)*3);
+	c3 = (struct node *)malloc(sizeof(struct node)*3);
+
+
+	/*
+	 * Initialize clusters
+	 */
+	for(int i=0;i<3;i++)
+		nodeLocalizedInit(&c1[i],i,40+(i*10),90+(i*70),0,0 );
+	for(int i=0;i<3;i++)
+		nodeLocalizedInit(&c2[i],i,350+(i*10),300+(i*70),0,0 );
+	for(int i=0;i<3;i++)
+		nodeLocalizedInit(&c3[i],i,250+(i*10),0+(i*70),0,0 );
+
+
+	// Pointer to mobile nodes
 	struct node* ni;
 
-	// Allocate memory for nodes
+	// Allocate memory for mobile nodes
 	ni =(struct node *)malloc(sizeof(struct node)*gN);
 
 	/*
-	 * Initialize Nodes
+	 * Initialize Mobile Nodes
 	 */
 	for(int i=0;i<gN;i++)
 		nodeInit(&ni[i],i,1,40);
 
 	// Load Map with nodes
 	loadMap(&matrix,ni,gN);
+	loadMap(&matrix,c1,3);
+	loadMap(&matrix,c2,3);
+	loadMap(&matrix,c3,3);
 
 	// Obtain Frontiers
 	frontiersCount = getFrontiers(&matrix,frontiers,utility);
@@ -85,9 +118,12 @@ int main(int argc,char** argv){
 	updateFrontiers(&matrix, frontiers, frontiersCount);
 
 	// Display the initial Map with frontiers
-	//imshow("My Map",matrix);
+	imshow("My Map",matrix);
 
-	//waitKey(0);
+	//set the callback function for any mouse event
+  setMouseCallback("My Map", CallBackFunc, NULL);
+ 
+	waitKey(0);
 
 	clock_t t1,t2;
 	// Start clock
@@ -102,6 +138,11 @@ int main(int argc,char** argv){
 			// Iterate through the nodes
 		for(int i=0;i<gN;i++){
 
+			activateCluster(&ni[i]);
+
+			loadMap(&matrix,c1,3);
+			loadMap(&matrix,c2,3);
+			loadMap(&matrix,c3,3);
 
 			// if the nodes has reached the destination (or came kinda close)
 			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 5){
@@ -165,7 +206,7 @@ int main(int argc,char** argv){
 		frontiersCount = getFrontiers(&matrix,frontiers,utility);
 		updateFrontiers(&matrix, frontiers, frontiersCount);
 
-		//imshow("My Map",matrix);
+		imshow("My Map",matrix);
 
 		// Get Coverage and log it
 //		if( (int)gTime % 100 == 0){
@@ -173,7 +214,7 @@ int main(int argc,char** argv){
 			//snapshot(&ni[0],gTime);
 //		}
 
-		/*char ch = waitKey(5);
+		char ch = waitKey(5);
 
 		switch(ch){
 
@@ -183,7 +224,7 @@ int main(int argc,char** argv){
 
 			case 'p':
 				waitKey(0);
-		}*/
+		}
 
 
 		if(coverage > 99.5)
@@ -194,7 +235,7 @@ int main(int argc,char** argv){
 	}// end of WHILE
 
 	
-	//waitKey(1);
+	waitKey(1);
 	printf("\n\n%.4f\n",gTotalDist);
 
 	return 0;
