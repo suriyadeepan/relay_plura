@@ -51,7 +51,17 @@ int assignBestFrontier(struct node *, Point *, int, int *, int *, int);
 
 /* Find distance bw mobile and static nodes and
  *  activate clusters*/
-void activateCluster( struct node *);
+void activateCluster( struct node *, struct node *, int);
+
+/*
+ * Initialize clusters
+ */
+void initClusters(struct node *, Point *, int);
+
+/*
+ * Overlay node locations
+ */
+void overlayNodes(Mat *, struct node *, int );
 
 /*
  * Update the pixel values based on node locations

@@ -1,6 +1,10 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "opencv2/opencv.hpp"
+
+using namespace cv;
+
 struct node{
 	
 	// set in the constructor
@@ -24,7 +28,7 @@ struct node{
 	double theta;
 
 	/* Updated every TIME_RESOLUTION time units
-	 * 	
+	0 * 	
 	 * 	run_time = run_time - TIME_RESOLUTION
 	 *  
 	 * When run_time becomes 0 move() function is called and
@@ -36,14 +40,25 @@ struct node{
 	 *  selected randomly everytime the node stops
 	 */
 	double rest_time;
+
+	/*
+	 * Type -> mobile/static
+	 */
+	int type;
+
+	/*
+	 * Set Power level
+	 */
+	int pl;
 	
 
 };
 
 // Constructors
 
-int nodeInit (struct node* ,int);
-int nodeLocalizedInit (struct node*,int,double,double);
+int nodeInit (struct node * ,int, int,int);
+int nodeLocalizedInit (struct node *,int,double,double,int,int);
+int nodeRandInit (struct node *,int,double,double,int,int);
 
 // General Utility Functions
 
@@ -79,6 +94,8 @@ double calcTheta(double ,double ,double ,double );
 
 double calcDist (double ,double ,double ,double );
 
+int closestPoint(Point *, int, int, int);
+
 
 /*
  * extern Global Variables
@@ -87,9 +104,12 @@ extern double gMax_X;
 extern double gMax_Y;
 extern double gMax_Speed;
 extern double gMax_Pause;
-extern double gN;
+extern int gN;
 extern double gRunTime;
 
 extern double gT_int;
+
+// Clusters
+extern struct node *c1,*c2,*c3;
 
 #endif

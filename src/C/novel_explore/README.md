@@ -31,6 +31,37 @@
 
 	3] Different target locations are assigned to the individual robots.
 
+### Algorithm ###
+
+	#### MAIN: ####	
+	- init map
+	- while area_explored < 99 do
+	- 	for all Nk do
+	- 			if(src == destination)
+	- 				setBestGridCell()
+	-				else
+	-					update M with the area covered by the node
+
+	#### SET_BEST_GRIDCELL ####
+	- for each pixel M(i,j) do
+	- 	D = distance(node[k], pixel(i,j) ) 	
+	-		cosine = cos ( node[k] , pixel(i,j) )
+	-		sine   = sin ( node[k] , pixel(i,j) )
+	-		while d < D
+	- 		x = i + ( d * cosine )
+	- 		y = i + ( d * sine )
+	- 		if ( M(x,y) == BLACK )
+	-				utility = utility + 1
+	- 	value = utility - ( constant1 * D )
+	- 	for each assigned_nodes node[m]
+	-			value = value - ( 1 - constant2 * distance(node[m], i, j) )
+			if value == MAX_VALUE
+				BEST_DEST = pixel(i,j)
+	- destination(node[k]) = BEST_DEST
+	- draw gray line from BEST_DEST to node[k]
+	
+
 ### Screenshot ###
+
 
 

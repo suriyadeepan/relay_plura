@@ -56,8 +56,9 @@ struct node{
 
 // Constructors
 
-int nodeInit (struct node* ,int, int,int);
-int nodeLocalizedInit (struct node*,int,double,double,int,int);
+int nodeInit (struct node * ,int, int,int);
+int nodeLocalizedInit (struct node *,int,double,double,int,int);
+int nodeRandInit (struct node *,int,double,double,int,int);
 
 // General Utility Functions
 
@@ -105,6 +106,8 @@ extern double gMax_Speed;
 extern double gMax_Pause;
 extern int gN;
 extern double gRunTime;
+extern int gDiscNodes;
+
 
 extern double gT_int;
 

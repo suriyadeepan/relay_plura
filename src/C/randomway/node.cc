@@ -6,7 +6,7 @@
 #include "time.h"
 
 
-int nodeInit (struct node* n0, int node_id){
+int nodeInit (struct node* n0, int node_id, int type, int pl){
 	
 	n0->node_id = node_id;
 		
@@ -14,9 +14,13 @@ int nodeInit (struct node* n0, int node_id){
 	 * Generate random values and assign to node positions
 	 */
 	//srand((int)time(NULL) + node_id);
-	srand( clock() );
+	/*srand( clock() );
 	n0->x = ( (double)rand()/(double)RAND_MAX ) * gMax_X;
 	n0->y = ( (double)rand()/(double)RAND_MAX ) * gMax_Y;
+	*/
+
+	n0->x = gMax_X/2;
+	n0->y = gMax_Y/2;
 
 	n0->run_time = 0.0;
 	n0->rest_time = 0.0;
@@ -25,10 +29,13 @@ int nodeInit (struct node* n0, int node_id){
 	n0->dstX = n0->x;
 	n0->dstY = n0->y;
 
+	n0->type = type;
+	n0->pl = pl;
+
 	return 0;
 }
 
-int nodeLocalizedInit (struct node* n0, int node_id, double x, double y){
+int nodeLocalizedInit (struct node* n0, int node_id, double x, double y, int type, int pl){
 
 	n0->node_id = node_id;
 	n0->x = x;
@@ -41,8 +48,37 @@ int nodeLocalizedInit (struct node* n0, int node_id, double x, double y){
 	n0->dstX = x;
 	n0->dstY = y;
 
+	n0->type = type;
+	n0->pl = pl;
+
 	return 0;
 
+}
+
+int nodeRandInit (struct node* n0, int node_id, double offsetX, double offsetY, int type, int pl){
+	
+	n0->node_id = node_id;
+		
+	/*
+	 * Generate random values and assign to node positions
+	 */
+	//srand((int)time(NULL) + node_id);
+	srand( clock() );
+	n0->x = ( ( (double)rand()/(double)RAND_MAX ) * 50 ) + offsetX;
+	n0->y = ( ( (double)rand()/(double)RAND_MAX ) * 50 ) + offsetY;
+
+
+	n0->run_time = 0.0;
+	n0->rest_time = 0.0;
+	n0->speed = 0.0;
+
+	n0->dstX = n0->x;
+	n0->dstY = n0->y;
+
+	n0->type = type;
+	n0->pl = pl;
+
+	return 0;
 }
 
 /*

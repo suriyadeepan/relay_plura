@@ -19,15 +19,20 @@ double gMax_Pause;
 double	gMax_X = 500;
 double	gMax_Y = 500;
 	//  #nodes
-double	gN = 5;
+int	gN = 6;
 	//	Run Time
-double	gRunTime = 100000;
+double	gRunTime = 300000;
 	//  Max Speed
-double	gMax_Speed = 5;
+double	gMax_Speed = 1;
 
 	// set time resolution
 double gT_int = 1;
+double gTotalDist = 0;
 
+double coverage = 0;
+
+struct node *cluster;
+int st_loca_size = 0;
 
 int main(){
 
@@ -38,7 +43,6 @@ int main(){
 	// set time interval
 	int t_int = 4;
 
-	int i;
 
 	// Pointer to nodes
 	struct node* ni;
@@ -48,8 +52,8 @@ int main(){
 	/*
 	 * Initialize Nodes
 	 */
-	for(i=0;i<gN;i++)
-		nodeInit(&ni[i],i);
+	for(int j=0;j<gN;j++)
+		nodeInit(&ni[j],j,1,25);
 
 	loadMap(&matrix,ni,gN);
 
@@ -58,8 +62,39 @@ int main(){
 
 	//waitKey(0);
 
-//	printf("\nnode id : %d\n",ni[0].node_id);
+	// Allocate memory
+	/*cluster = (struct node *)malloc(sizeof(struct node)*60);
 
+	int i=0;
+	for( int j=0; j< 10; j++)
+			nodeRandInit( &cluster[(i*10)+j], (i*10)+j, 51+j, 39+j, 0, 0); 
+
+	i=1;
+	for( int j=0; j< 10; j++)
+			nodeRandInit( &cluster[(i*10)+j], (i*10)+j, 437+j, 93+j, 0, 0); 
+
+	i=2;
+	for( int j=0; j< 10; j++)
+			nodeRandInit( &cluster[(i*10)+j], (i*10)+j, 93+j, 429+j, 0, 0); 
+
+	i=3;
+	for( int j=0; j< 10; j++)
+			nodeRandInit( &cluster[(i*10)+j], (i*10)+j, 343+j, 406+j, 0, 0); 
+
+	i=4;
+	for( int j=0; j< 10; j++)
+			nodeRandInit( &cluster[(i*10)+j], (i*10)+j, 250+j, 70+j, 0, 0); 
+
+	i=5;
+	for( int j=0; j< 10; j++)
+			nodeRandInit( &cluster[(i*10)+j], (i*10)+j, 57+j, 250+j, 0, 0); 
+
+
+	st_loca_size = 60;
+
+
+//	printf("\nnode id : %d\n",ni[0].node_id);
+	*/
 	// start clock
 	clock_t t1 = clock();
 
@@ -67,7 +102,10 @@ int main(){
 	while(gTime <=  gRunTime){
 
 			// Iterate through the nodes
-		for(i=0;i<gN;i++){
+		for(int i=0;i<gN;i++){
+
+			/*activateCluster(&ni[i], cluster, st_loca_size);
+			loadMap(&matrix, cluster, st_loca_size);*/
 
 			// Check if the node has runtime left or not
 			if( ni[i].run_time > 0.0 ){
@@ -90,6 +128,13 @@ int main(){
 
 				ni[i].run_time -= 0.2;
 
+					if(i==0)
+						gTotalDist += 0.2;
+
+					coverage = getCoverage(&matrix) *100;
+					printf("\n%.0f %.4f",gTotalDist, coverage);
+
+
 			}// end of RUNTIME_LEFT condition
 
 			// No runtime left
@@ -103,13 +148,18 @@ int main(){
 				else{
 
 					srand(clock()+i);
-
-					move_rwy ( &ni[i],( (double)rand()/(double)RAND_MAX ) * gMax_X,
+					double c_speed = ( (double)rand()/(double)RAND_MAX ) * gMax_Speed;
+/*					move_rwy ( &ni[i],( (double)rand()/(double)RAND_MAX ) * gMax_X,
 								 				( (double)rand()/(double)RAND_MAX ) * gMax_Y,
-												( (double)rand()/(double)RAND_MAX ) * gMax_Speed,
+												c_speed,	
 												( (double)rand()/(double)RAND_MAX ) * gMax_Pause );
-					
+												*/
+				move_rwy ( &ni[i], ( (double)rand()/(double)RAND_MAX ) * gMax_X,
+								 				( (double)rand()/(double)RAND_MAX ) * gMax_Y,
+												1,0);
 
+
+					
 				}// end of NO_PAUSETIME_LEFT condition
 
 
@@ -132,7 +182,7 @@ int main(){
 		switch(ch){
 
 			case 'q':
-				printf("\n\n***FORCE QUIT BY User***\n");
+				//printf("\n\n***FORCE QUIT BY User***\n");
 				return -1;
 
 			case 'p':
@@ -141,9 +191,10 @@ int main(){
 
  	 //Snapshot of node locations @ time "gTime"
 	 //snapshot(&ni[0],gTime);
-	 double coverage = getCoverage(&matrix)*100;
+/*	 double coverage = getCoverage(&matrix)*100;
 	 printf("\n%.0f %.4f",( (double)(clock() - t1)/ 1000000.0F ) * 1000
 					,coverage); 
+					*/
 
 	 if(coverage > 99)
 		 break;

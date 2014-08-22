@@ -39,6 +39,47 @@ int nodeInit (struct node* n0, int node_id, int type,int pl){
 	return 0;
 }
 
+int nodeRandInit (struct node* n0, int node_id, double offsetX, double offsetY, int type, int pl){
+	
+	n0->node_id = node_id;
+		
+	/*
+	 * Generate random values and assign to node positions
+	 */
+	//srand((int)time(NULL) + node_id);
+	srand( clock() );
+
+	if(offsetX == 0 && offsetY == 0){
+		n0->x = ( ( (double)rand()/(double)RAND_MAX ) * 500 ) ;
+		n0->y = ( ( (double)rand()/(double)RAND_MAX ) * 500 ) ;
+	}
+
+	else{
+		n0->x = ( ( (double)rand()/(double)RAND_MAX ) * 50 ) + offsetX;
+		n0->y = ( ( (double)rand()/(double)RAND_MAX ) * 50 ) + offsetY;
+	}
+
+
+
+	n0->run_time = 0.0;
+	n0->rest_time = 0.0;
+	n0->speed = 0.0;
+
+	n0->dstX = n0->x;
+	n0->dstY = n0->y;
+
+	// set type 
+	n0->type = type;
+
+	// set powerlevel
+	n0->pl = pl;
+
+	return 0;
+}
+
+
+
+
 int nodeLocalizedInit (struct node* n0, int node_id, double x, double y, int type, int pl){
 
 	n0->node_id = node_id;

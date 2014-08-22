@@ -1,0 +1,21 @@
+set xrange [0:2500]
+set yrange [0:100]
+
+set xtics font "Times,16"
+set ytics font "Times,16"
+
+set title "7 Nodes"
+
+set ylabel "Percentage Area Discovered" font "Times,18"
+set xlabel "Simulation Time" font "Times,18"
+
+set key bottom right
+set key spacing 2 font "Times,18"
+
+set grid 
+
+
+plot "cov_7_fb" smooth sbezier title "Frontier" lw 4 , "cov_7_ne" smooth sbezier title "Max Gain Approach" lw 4 
+
+
+pause 10

@@ -35,6 +35,9 @@ double gC = 0.0;
 // set points for drawing gray lines
 Point line_src, line_dst;
 
+// comm traffic
+int traffic = 0;
+
 
 /*
  * Keep track of assigned nodes
@@ -67,7 +70,7 @@ int main(int argc,char** argv){
 	 * Initialize Nodes
 	 */
 	for(int i=0;i<gN;i++)
-		nodeInit(&ni[i],i,1,40);
+		nodeInit(&ni[i],i,1,25);
 
 	// Load Map with nodes
 	loadMap(&matrix,ni,gN);
@@ -81,7 +84,7 @@ int main(int argc,char** argv){
 	// Start clock
 	t1 = clock();
 
-	printf("\n%.4f %.4f",gTotalDist, getCoverage(&matrix)*100); 
+	//printf("\n%.4f %.4f",gTotalDist, getCoverage(&matrix)*100); 
 
 	// Start Running till end of gRunTime
 	while(gTime <=  gRunTime){
@@ -92,11 +95,11 @@ int main(int argc,char** argv){
 
 
 			// if the nodes has reached the destination (or came kinda close)
-			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 10){
+			if( calcDist( ni[i].x ,ni[i].y ,ni[i].dstX ,ni[i].dstY ) < 15){
 
 				// Find the destination with highest utility value
 				//  and set it as destination for the node
-				loadMap(&matrix,ni,gN);
+				//loadMap(&matrix,ni,gN);
 				setBestDestination(&ni[i],&matrix, assigned, numAssigned);
 
 				if(numAssigned < gN){
@@ -107,6 +110,10 @@ int main(int argc,char** argv){
 				}
 				else
 					assigned[i] = Point(ni[i].dstX, ni[i].dstY);
+
+				// traffic inc
+				traffic++;
+				//printf("\n\nTraffic : %d\n",traffic);
 
 
 				// update the direction/angle (theta)
@@ -121,7 +128,7 @@ int main(int argc,char** argv){
 			else{
 
 				//setBestDestination(&ni[i],&matrix);
-				loadMap(&matrix,ni,gN);
+				//loadMap(&matrix,ni,gN);
 				//imshow("bw",bwMat);
 
 				// Speed is constant
@@ -135,7 +142,7 @@ int main(int argc,char** argv){
 				// keep track of total distance travelled by node0
 				if(i==0){
 						gTotalDist += gMax_Speed;
-						gC = getCoverage(&matrix) * 100;
+						gC = getCoverage(&matrix) * 103;
 						printf("\n%.4f %.4f",gTotalDist, gC); 
 				}
 
@@ -167,6 +174,8 @@ int main(int argc,char** argv){
 
 			case 'q':
 				printf("\n\n**** FORCE QUIT by User ****\n");
+				printf("\nCoverage : %.3f",gC);
+				printf("\n\nTraffic : %d\n",traffic);
 				return -1;
 
 			case 'p':
@@ -177,7 +186,7 @@ int main(int argc,char** argv){
 		}
 
 
-		if(gC > 97)
+		if(gC >= 100)
 			break;
 
 		gTime += gT_int;
@@ -186,7 +195,7 @@ int main(int argc,char** argv){
 
 
 	//waitKey(1);
-	//printf("\n\n%.4f\n",gTotalDist);
+	//printf("\n\nTraffic : %d\n",traffic);
 
 	return 0;
 

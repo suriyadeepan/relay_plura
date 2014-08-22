@@ -18,6 +18,14 @@ int initMap (Mat* matrix, int sizeX, int sizeY){
 
 }
 
+void overlayNodes(Mat *matrix, struct node *cluster, int st_loca_size){
+
+	for( int i=0; i< st_loca_size; i++ )
+		circle( *matrix, Point(cluster[i].x,cluster[i].y), 2 , Scalar(0,0,255), -1, 8, 0 );
+
+}
+
+
 /*
  * Call mapInitAll() along with loadMap()
  */
@@ -41,13 +49,18 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 		y = (int) *(&n0[i].y);
 
 
+		if(n0[i].pl > 0)
 		circle( *matrix, Point(x,y), (int)*(&n0[i].pl), Scalar(255,255,255), -1, 8, 0 );
 
-		if( (int)*(&n0[i].type) == 1 )
-			circle( *matrix, Point(x,y), (int)*(&n0[i].pl)/8 , Scalar(0,255,0), -1, 8, 0 );
-
 		else
-			circle( *matrix, Point(x,y), (int)*(&n0[i].pl)/8 , Scalar(0,0,255), -1, 8, 0 );
+		circle( *matrix, Point(x,y), 40, Scalar(30,30,30), -1, 8, 0 );
+
+		if( (int)*(&n0[i].type) == 1 )
+			circle( *matrix, Point(x,y), 5 , Scalar(0,255,0), -1, 8, 0 );
+
+		/*else
+			circle( *matrix, Point(x,y), 5 , Scalar(0,0,255), -1, 8, 0 );
+			*/
 
 
 	}// END OF FOR
@@ -72,7 +85,7 @@ void updateFrontiers(Mat *matrix,Point *frontiers,int frontierCount){
 
 	}
 
-	imshow("Frontier Map",frontierMap);
+	//imshow("Frontier Map",frontierMap);
 
 }
 
@@ -91,9 +104,9 @@ double getCoverage(Mat* matrix ){
 	 */
 	Mat dst;
 	cvtColor(*matrix,dst,CV_BGR2GRAY,0);
-	threshold(dst,dst,10,255,THRESH_BINARY);
+	threshold(dst,dst,50,255,THRESH_BINARY);
 
-	imshow("Cov",dst);
+	//imshow("Cov",dst);
 
 	double coverage = (double)( countNonZero(dst)/(gMax_X*gMax_Y) );
 
@@ -113,10 +126,10 @@ int getFrontiers(Mat *matrix, Point *frontiers,int *utility){
 	cvtColor(*matrix,cannied,CV_BGR2GRAY,0);
 
 	// convert GRAYSCALE to binary
-	threshold(cannied,cannied,10,255,THRESH_BINARY);
+	threshold(cannied,cannied,50,255,THRESH_BINARY);
 
 	// Apply Canny filter for Edge Detection
-	Canny(cannied, cannied , 10, 240, 3, false);
+	Canny(cannied, cannied , 50, 240, 3, false);
 
 	// Find contours
 	findContours( cannied, contours, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
@@ -209,54 +222,59 @@ int assignBestFrontier(struct node *n0, Point *frontiers, int frontierCount,int 
 }
 
 /* Activate Cluster */
-void activateCluster(struct node* n0){
+void activateCluster(struct node* n0,struct node* cluster, int st_loca_size){
 
-	// check distance to all cluster nodes
-	// C1 check
-	bool flag = false;
+	for( int i=0; i< st_loca_size; i++){
+		if( cluster[i].pl == 0 )
+			if( calcDist( cluster[i].x, cluster[i].y, n0->x,n0->y ) < 55){
 
-	if(c1[0].pl == 0){
-		
-		flag = true;
-	for(int i=0; i<3; i++)
-		if(calcDist(n0->x,n0->y,c1[i].x,c1[i].y) < n0->pl){
-			
-			for(int j=0;j<3;j++)
-				c1[j].pl = 40;
-			break;
+				cluster[i].pl = 40;
+				gDiscNodes++;
 
-		}
+				for( int j=0; j< st_loca_size; j++){
+					if( cluster[j].pl == 0)
+					if( calcDist( cluster[i].x, cluster[i].y, cluster[j].x, cluster[j].y) < 70){
+						cluster[j].pl = 40;
+						gDiscNodes++;
+					}
+				}
+			}
+
 	}
 
-	if(c2[0].pl == 0){
+	/*
+	for(int i=0;i<2;i++)
+	if(cluster[i*10].pl == 0)
+	if( calcDist( n0->x, n0->y, 100,100 ) < 70 )
+		for( int j=0; j<10;j++ )
+			cluster[(i*10)+j].pl = 80;
 
-		flag = true;
-	for(int i=0; i<3; i++)
-		if(calcDist(n0->x,n0->y,c2[i].x,c2[i].y) < n0->pl){
+	for(int i=2;i<4;i++)
+	if(cluster[(i*10)].pl == 0)
+	if( calcDist( n0->x, n0->y, 437,93 ) < 100 )
+		for( int j=0; j<10;j++ )
+			cluster[(i*10)+j].pl = 80;
+
+
+	for(int i=4;i<6;i++)
+	if(cluster[(i*10)].pl == 0)
+	if( calcDist( n0->x, n0->y, 120,380) < 70 )
+		for( int j=0; j<10;j++ )
+			cluster[(i*10)+j].pl = 80;
 			
-			for(int j=0;j<3;j++)
-				c2[j].pl = 40;
-			break;
+	for(int i=6;i<8;i++)
+	if(cluster[(i*10)].pl == 0)
+	if( calcDist( n0->x, n0->y,343,406) < 100 )
+		for( int j=0; j<10;j++ )
+			cluster[(i*10)+j].pl = 80;
+*/
+}
 
-		}
-	}
+void initClusters(struct node *cluster, Point *st_loca, int st_loca_size){
 
-	if(c3[0].pl == 0){
+	for( int i=0; i< st_loca_size; i++)
+		nodeLocalizedInit(&cluster[i],1,st_loca[i].x,st_loca[i].y,0,0);
 
-		flag = true;
-	for(int i=0; i<3; i++)
-		if(calcDist(n0->x,n0->y,c3[i].x,c3[i].y) < n0->pl){
-			
-			for(int j=0;j<3;j++)
-				c3[j].pl = 40;
-			break;
-
-		}
-	}
-
-/*	if(flag == false)
-		waitKey(0);
-		*/
 
 }
 

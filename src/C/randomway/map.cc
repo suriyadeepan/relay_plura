@@ -42,8 +42,12 @@ int loadMap(Mat* matrix,struct node *n0, int nodeCount){
 		y = (int) *(&n0[i].y);
 
 
-		circle( *matrix, Point(x,y), 40, Scalar(255,255,255), -1, 8, 0 );
-		circle( *matrix, Point(x,y), 10, Scalar(0,255,0), -1, 8, 0 );
+		if( n0[i].pl == 0)
+		circle( *matrix, Point(x,y), 40, Scalar(30,20,30), -1, 8, 0 );
+		else
+		circle( *matrix, Point(x,y), n0[i].pl, Scalar(255,255,255), -1, 8, 0 );
+
+		circle( *matrix, Point(x,y), 5, Scalar(0,255,0), -1, 8, 0 );
 
 		//sprintf(str,"%d: (%d,%d)",*(&n0[i].node_id),x,y);
 		//putText(*matrix, str,Point(30,30),FONT_HERSHEY_PLAIN,1, Scalar(0,0,255),1,8,false);
@@ -68,7 +72,9 @@ double getCoverage(Mat* matrix ){
 	 */
 	Mat dst;
 	cvtColor(*matrix,dst,CV_BGR2GRAY,0);
-	threshold(dst,dst,10,255,THRESH_BINARY);
+	threshold(dst,dst,70,255,THRESH_BINARY);
+
+	imshow("cov",dst);
 
 	double coverage = (double)( countNonZero(dst)/(gMax_X*gMax_Y) );
 
@@ -76,6 +82,24 @@ double getCoverage(Mat* matrix ){
 	dst.release();
 
 	return coverage;
+
+}
+
+/* Activate Cluster */
+void activateCluster(struct node* n0,struct node* cluster, int st_loca_size){
+
+	for( int i=0; i< st_loca_size; i++){
+		if( cluster[i].pl == 0 )
+			if( calcDist( cluster[i].x, cluster[i].y, n0->x,n0->y ) < 55){
+
+				cluster[i].pl = 40;
+
+				for( int j=0; j< st_loca_size; j++)
+					if( calcDist( cluster[i].x, cluster[i].y, cluster[j].x, cluster[j].y) < 85)
+						cluster[j].pl = 40;
+			}
+
+	}
 
 }
 

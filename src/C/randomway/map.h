@@ -29,12 +29,34 @@ int loadMap(Mat *, struct node *, int);
 /*
  * Calculate Histogram
  */
-void runHist(Mat *);
-
-// Get Coverage
 double getCoverage(Mat *);
 
+/*
+ * Find the frontiers using Edge Detection Filter
+ */
+int getFrontiers(Mat *,Point *,int *);
 
+/*
+ * Update the map with frontiers
+ */
+void updateFrontiers(Mat *, Point *, int);
+
+/*
+ * Find the best possible frontier to explore for a particular node
+ *  based on Value Function = ( Utility - Cost )
+ *
+ * Assign it to the node
+ */
+int assignBestFrontier(struct node *, Point *, int, int *, int *, int);
+
+/* Find distance bw mobile and static nodes and
+ *  activate clusters*/
+void activateCluster( struct node *, struct node *, int);
+
+/*
+ * Initialize clusters
+ */
+void initClusters(struct node *, Point *, int);
 
 /*
  * Update the pixel values based on node locations

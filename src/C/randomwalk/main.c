@@ -14,9 +14,9 @@ int main(){
 	gMax_X = 250;
 	gMax_Y = 250;
 	//  #nodes
-	gN = 5;
+	gN = 6;
 	//	Run Time
-	gRunTime = 10000;
+	gRunTime = 300000;
 	//  Max Speed
 	gMax_Speed = 4;
 

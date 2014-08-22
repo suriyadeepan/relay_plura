@@ -1,0 +1,23 @@
+set xrange [0:2400]
+set yrange [0:100]
+f(x)=x*0.7148
+
+set xtics font "Times,16"
+set ytics font "Times,16"
+
+set ylabel "Percentage Nodes Discovered" font "Times,18"
+set xlabel "Simulation Time" font "Times,18"
+
+set key bottom right
+set key spacing 2 font "Times,18"
+
+set grid 
+
+
+# 7 nodes
+#plot "output.out" using ($1):(f(($2+$3)/2)) smooth sbezier title "Frontier " lw 4 , "../randomdir/output.out" using ($1):(f(($2+$3+$4)/3)) smooth sbezier title "Random Direction" lw 4 , "../fb_rb_hybrid/output.out" using ($1):(f(($2+$3+$4)/3)) smooth sbezier title "Hybrid " lw 4
+
+# 4 nodes
+plot "op.out" using ($1):(f(($2+$3+$4+$5)/4)) smooth sbezier title "Frontier " lw 4 , "../randomdir/op.out" using ($1):(f(($2+$3+$4+$5)/4)) smooth sbezier title "Random Direction" lw 4 , "../fb_rb_hybrid/op.out" using ($1):(f(($2+$3+$4+$5+$6)/5)) smooth sbezier title "Hybrid " lw 4
+
+pause 10
