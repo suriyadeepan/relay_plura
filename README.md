@@ -14,7 +14,7 @@ This repository is a collection of projects in Wireless Sensor Network involving
 - Open Cooja Simulator
 - New Simulation (or open Simulation -> simulation/basic_multihop_sim.csc)
 - Motes -> Add Motes -> Create Mote -> Sky Mote -> Browse -> main.exe
-	# find main.exe from build/telosb/main.exe
+  - find `main.exe` from `build/telosb/main.exe`
 - Simulation Control -> start
 - Move nodes around and observe connectivity
 
